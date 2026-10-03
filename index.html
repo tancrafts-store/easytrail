@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#5B47D6">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Easy Trial – See the fit before the fitting</title>
 <meta name="description" content="AI virtual clothing try-on for small clothing shops.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,10 +44,13 @@
       <span class="font-display text-2xl font-bold tracking-tight">Easy<span class="text-accent"> Trial</span></span>
       <span class="hidden sm:inline text-sm text-ink/60">See the fit before the fitting.</span>
     </div>
+    <div class="flex items-center">
+    <button id="installBtn" class="hidden mr-2 rounded-full bg-accent-soft px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/20">Install app</button>
     <button id="openSettings" class="relative h-11 w-11 grid place-items-center rounded-full hover:bg-black/5 transition" aria-label="Open settings" aria-haspopup="dialog">
       <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       <span id="keyDot" class="absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-amber-500 ring-2 ring-paper" title="No API key saved"></span>
     </button>
+    </div>
   </div>
 </header>
 
@@ -82,7 +89,7 @@
     <div class="mt-5 flex justify-center rounded-2xl bg-paper p-2">
       <img id="resultImg" alt="AI-generated image of the customer wearing the garment" class="max-h-[75vh] w-auto max-w-full rounded-xl object-contain">
     </div>
-    <p class="mt-4 text-sm text-ink/60">This image is AI-generated and may not perfectly represent real garment fit, size, color, or texture.</p>
+    <p id="resultNote" class="mt-4 text-sm text-ink/60">This image is AI-generated and may not perfectly represent real garment fit, size, color, or texture.</p>
     <div class="mt-5 flex flex-col sm:flex-row gap-3">
       <button id="downloadBtn" class="rounded-xl bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-dark">Download Image</button>
       <button id="againBtn" class="rounded-xl border border-ink/20 px-6 py-3 font-semibold transition hover:bg-black/5">Generate Another</button>
@@ -144,21 +151,26 @@
   // Image-capable Gemini model (gemini-2.5-flash only returns text).
   const MODEL = 'gemini-2.5-flash-image';
   const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+  const PROMPT_NO_BACK = 'Virtually try on the provided clothing onto the person. Image 1 is the front view of the garment and Image 2 is the person. Generate a realistic photo of the person wearing the garment.';
   const PROMPT = 'Virtually try on the provided clothing onto the person. Image 1 is the front view of the garment, Image 2 is the back view, and Image 3 is the person. Generate a realistic photo of the person wearing the garment.';
   const ALLOWED = ['image/jpeg', 'image/png', 'image/webp'];
   const MAX_FILE_BYTES = 20 * 1024 * 1024; // reject absurdly large files before decoding
   const MAX_DIM = 800;
   // Free engine: a public Hugging Face Space running a try-on model, called via the Gradio client.
   // If it stops working, open the Space > "Use via API" and update these three values.
-  // Spaces are tried in order (IDM-VTON based). Kolors' public Space has its API closed, so it is not used.
-  const HF_SPACES = ['yisol/IDM-VTON', 'Nymbo/Virtual-Try-On'];
-  const HF_ENDPOINT = '/tryon';
+  // Spaces are tried in order; if one is offline or its API changed, the next is used.
+  const idmArgs = (g, p) => ({ dict: { background: p, layers: [], composite: null }, garm_img: g, garment_des: 'a garment', is_checked: true, is_checked_crop: false, denoise_steps: 40, seed: 42 });
+  const HF_SPACES = [
+    { id: 'franciszzj/Leffa', endpoint: '/leffa_predict_vt', args: (g, p) => ({ src_image_path: p, ref_image_path: g, ref_acceleration: false, step: 30, scale: 2.5, seed: 42, vt_model_type: 'viton_hd', vt_garment_type: 'upper_body', vt_repaint: false }) },
+    { id: 'yisol/IDM-VTON', endpoint: '/tryon', args: idmArgs },
+    { id: 'Nymbo/Virtual-Try-On', endpoint: '/tryon', args: idmArgs }
+  ];
   const HF_CLIENT_URL = 'https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js';
   const PROVIDER_KEY = 'easy_trial_provider', HF_TOKEN_KEY = 'easy_trial_hf_token';
 
   const SLOTS = [
     { id: 'front', label: 'Front View', hint: 'Upload a clear front photo of the clothing.' },
-    { id: 'back', label: 'Back View', hint: 'Upload a clear back photo of the clothing.' },
+    { id: 'back', label: 'Back View (optional)', hint: 'Optional: a clear back photo of the clothing.' },
     { id: 'person', label: 'Customer Photo', hint: 'Upload a clear, full-body photo of the person.' }
   ];
 
@@ -229,7 +241,7 @@
 
   // ---------- Image compression ----------
   /** Resize to max 800px per side, convert to JPEG (0.85), return Base64 without the data-URL prefix. */
-  async function compressImage(file) {
+  async function compressImage(file, maxDim = MAX_DIM) {
     const url = URL.createObjectURL(file);
     try {
       const img = await new Promise((resolve, reject) => {
@@ -238,7 +250,7 @@
         i.onerror = () => reject(new Error('decode'));
         i.src = url;
       });
-      const scale = Math.min(1, MAX_DIM / Math.max(img.naturalWidth, img.naturalHeight));
+      const scale = Math.min(1, maxDim / Math.max(img.naturalWidth, img.naturalHeight));
       const w = Math.max(1, Math.round(img.naturalWidth * scale));
       const h = Math.max(1, Math.round(img.naturalHeight * scale));
       const canvas = document.createElement('canvas');
@@ -327,7 +339,6 @@
     const m = [];
     if (!files.front) m.push('the front garment photo');
     const gem = getProvider() === 'gemini';
-    if (gem && !files.back) m.push('the back garment photo');
     if (!files.person) m.push('the customer photo');
     if (gem && !getKey()) m.push('your Gemini API key (open Settings)');
     return m;
@@ -404,27 +415,20 @@
   async function generateFree() {
     try {
       let garment, person;
-      try { [garment, person] = await Promise.all([files.front, files.person].map(compressImage)); }
+      try { [garment, person] = await Promise.all([files.front, files.person].map((f) => compressImage(f, 1024))); }
       catch { throw new Error('One of your images couldn\'t be read or compressed. Try re-saving it as a JPG or PNG.'); }
       showLoading(true, 'Creating your virtual try-on…');
       let mod;
       try { mod = await import(HF_CLIENT_URL); }
       catch { throw new Error('Couldn\'t load the free try-on connector. Check your internet connection.'); }
       const token = getHfToken();
-      let out = null, lastErr = null;
-      for (const space of HF_SPACES) { // fall back to the next Space if one is offline or has changed
+      let out = null, lastErr = null, used = '';
+      const g = base64ToBlob(garment, 'image/jpeg'), pr = base64ToBlob(person, 'image/jpeg');
+      for (const sp of HF_SPACES) {
         try {
-          const client = await mod.Client.connect(space, token ? { hf_token: token } : {});
-          out = await client.predict(HF_ENDPOINT, {
-            dict: { background: base64ToBlob(person, 'image/jpeg'), layers: [], composite: null },
-            garm_img: base64ToBlob(garment, 'image/jpeg'),
-            garment_des: 'a garment',
-            is_checked: true,        // auto-detect the area to replace
-            is_checked_crop: false,
-            denoise_steps: 30,
-            seed: 42
-          });
-          break;
+          const client = await mod.Client.connect(sp.id, token ? { hf_token: token } : {});
+          out = await client.predict(sp.endpoint, sp.args(g, pr));
+          used = sp.id; break;
         } catch (e) { lastErr = e; }
       }
       if (!out) throw lastErr || new Error('The free try-on service is unavailable.');
@@ -434,6 +438,7 @@
       const r = await fetch(url);
       if (!r.ok) throw new Error('The try-on finished but the image couldn\'t be downloaded. Please try again.');
       const blob = await r.blob();
+      $('resultNote').textContent = $('resultNote').textContent.split(' Engine:')[0] + ' Engine: ' + used + '.';
       resultMime = blob.type || 'image/png';
       resultUrl = URL.createObjectURL(blob);
       $('resultImg').src = resultUrl;
@@ -451,8 +456,8 @@
     showLoading(true, 'Preparing your images…');
     if (getProvider() === 'hf') { await generateFree(); return; }
     try {
-      let [front, back, person] = [null, null, null];
-      try { [front, back, person] = await Promise.all([files.front, files.back, files.person].map(compressImage)); }
+      let front, back = null, person;
+      try { [front, person] = await Promise.all([files.front, files.person].map((f) => compressImage(f))); if (files.back) back = await compressImage(files.back); }
       catch { throw new Error('One of your images couldn\'t be read or compressed. Try re-saving it as a JPG or PNG and upload it again.'); }
 
       showLoading(true, 'Creating your virtual try-on…');
@@ -463,7 +468,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: PROMPT }, img(front), img(back), img(person)] }],
+            contents: [{ parts: back ? [{ text: PROMPT }, img(front), img(back), img(person)] : [{ text: PROMPT_NO_BACK }, img(front), img(person)] }],
             generationConfig: { responseModalities: ['IMAGE'] }
           })
         });
@@ -496,6 +501,7 @@
   function resetResult() {
     if (resultUrl) URL.revokeObjectURL(resultUrl);
     resultUrl = null;
+    $('resultNote').textContent = $('resultNote').textContent.split(' Engine:')[0];
     $('resultImg').removeAttribute('src');
     $('result').classList.add('hidden');
   }
@@ -523,6 +529,12 @@
     $('toggleKey').textContent = show ? 'Hide' : 'Show';
     $('toggleKey').setAttribute('aria-pressed', String(show));
   });
+  // Install as an app (Chrome shows this once the page meets install criteria)
+  let installEvt = null;
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); installEvt = e; $('installBtn').classList.remove('hidden'); });
+  window.addEventListener('appinstalled', () => { installEvt = null; $('installBtn').classList.add('hidden'); });
+  $('installBtn').addEventListener('click', async () => { if (!installEvt) return; installEvt.prompt(); await installEvt.userChoice; installEvt = null; $('installBtn').classList.add('hidden'); });
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
   $('generateBtn').addEventListener('click', generateVirtualTryOn);
   $('downloadBtn').addEventListener('click', downloadGeneratedImage);
   $('againBtn').addEventListener('click', () => { resetResult(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
