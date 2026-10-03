@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Easy Trial – See the fit before the fitting</title>
+<meta name="description" content="AI virtual clothing try-on for small clothing shops.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { paper: '#FAF7F2', ink: '#26242B', accent: { DEFAULT: '#5B47D6', dark: '#4634B8', soft: '#EEEBFC' } },
+    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'], display: ['"Bricolage Grotesque"', 'Inter', 'system-ui', 'sans-serif'] }
+  } } };
+</script>
+<style>
+  body { background: #FAF7F2; color: #26242B; }
+  :focus-visible { outline: 3px solid #5B47D6; outline-offset: 2px; }
+  .drawer { transform: translateX(100%); transition: transform .3s ease; visibility: hidden; }
+  .drawer.open { transform: none; visibility: visible; }
+  .overlay { opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+  .overlay.open { opacity: 1; pointer-events: auto; }
+  .dz.over { border-color: #5B47D6; background: #EEEBFC; }
+  .spinner { width: 1.25rem; height: 1.25rem; border: 3px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 9999px; animation: spin .8s linear infinite; }
+  .spinner.big { width: 2.5rem; height: 2.5rem; border-color: #E0DBF8; border-top-color: #5B47D6; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body class="font-sans antialiased min-h-screen overflow-x-hidden">
+
+<!-- Fixed header -->
+<header class="fixed top-0 inset-x-0 z-30 bg-paper/90 backdrop-blur border-b border-black/5">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <div class="flex items-baseline gap-3">
+      <span class="font-display text-2xl font-bold tracking-tight">Easy<span class="text-accent"> Trial</span></span>
+      <span class="hidden sm:inline text-sm text-ink/60">See the fit before the fitting.</span>
+    </div>
+    <button id="openSettings" class="relative h-11 w-11 grid place-items-center rounded-full hover:bg-black/5 transition" aria-label="Open settings" aria-haspopup="dialog">
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span id="keyDot" class="absolute top-2 right-2 h-2.5 w-2.5 rounded-full bg-amber-500 ring-2 ring-paper" title="No API key saved"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="max-w-6xl mx-auto px-4 pt-28 pb-16">
+  <section class="max-w-2xl">
+    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Your virtual fitting room</h1>
+    <p class="mt-3 text-base sm:text-lg text-ink/70">Upload your garment and a customer photo to create a realistic virtual try-on.</p>
+  </section>
+
+  <!-- Alert region -->
+  <div id="alert" role="alert" aria-live="assertive" class="mt-6 hidden"></div>
+
+  <!-- Upload cards (rendered by JS) -->
+  <section id="uploads" class="mt-8 grid gap-5 md:grid-cols-3" aria-label="Image uploads"></section>
+
+  <!-- Generate -->
+  <section class="mt-8">
+    <button id="generateBtn" class="w-full sm:w-auto sm:min-w-[22rem] sm:mx-auto flex items-center justify-center gap-3 rounded-2xl bg-accent px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-accent/25 transition hover:bg-accent-dark active:scale-[.98] disabled:opacity-45 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:bg-accent">
+      <span id="btnSpinner" class="spinner hidden" aria-hidden="true"></span>
+      <span id="btnLabel">Generate Virtual Try-On</span>
+    </button>
+    <p id="hint" class="mt-3 text-center text-sm text-ink/60"></p>
+  </section>
+
+  <!-- Loading -->
+  <section id="loading" role="status" aria-live="polite" class="hidden mt-10 rounded-3xl bg-white p-8 text-center shadow-sm ring-1 ring-black/5">
+    <div class="spinner big mx-auto" aria-hidden="true"></div>
+    <p id="loadingText" class="mt-4 font-semibold">Preparing your images…</p>
+    <p class="mt-1 text-sm text-ink/60">Generation may take a little time. Please keep this page open.</p>
+  </section>
+
+  <!-- Result -->
+  <section id="result" class="hidden mt-10 rounded-3xl bg-white p-5 sm:p-8 shadow-xl shadow-black/5 ring-1 ring-black/5" aria-labelledby="resultTitle">
+    <h2 id="resultTitle" class="font-display text-2xl sm:text-3xl font-bold">Your virtual try-on is ready</h2>
+    <div class="mt-5 flex justify-center rounded-2xl bg-paper p-2">
+      <img id="resultImg" alt="AI-generated image of the customer wearing the garment" class="max-h-[75vh] w-auto max-w-full rounded-xl object-contain">
+    </div>
+    <p class="mt-4 text-sm text-ink/60">This image is AI-generated and may not perfectly represent real garment fit, size, color, or texture.</p>
+    <div class="mt-5 flex flex-col sm:flex-row gap-3">
+      <button id="downloadBtn" class="rounded-xl bg-accent px-6 py-3 font-semibold text-white transition hover:bg-accent-dark">Download Image</button>
+      <button id="againBtn" class="rounded-xl border border-ink/20 px-6 py-3 font-semibold transition hover:bg-black/5">Generate Another</button>
+    </div>
+  </section>
+</main>
+
+<!-- Settings drawer -->
+<div id="overlay" class="overlay fixed inset-0 z-40 bg-black/40" aria-hidden="true"></div>
+<aside id="drawer" class="drawer fixed top-0 right-0 z-50 h-full w-full max-w-md overflow-y-auto bg-white p-6 shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="flex items-center justify-between">
+    <h2 id="settingsTitle" class="font-display text-2xl font-bold">Settings</h2>
+    <button id="closeSettings" class="h-11 w-11 grid place-items-center rounded-full hover:bg-black/5" aria-label="Close settings">
+      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <p class="mt-3 text-sm text-ink/70">Easy Trial uses a Google Gemini API key to generate try-on images. You can create one in Google AI Studio.</p>
+
+  <label for="providerSel" class="mt-5 block text-sm font-semibold">Image engine</label>
+  <select id="providerSel" class="mt-2 w-full rounded-xl border border-ink/20 bg-white px-4 py-3">
+    <option value="hf">Free: Hugging Face (uses front view + customer photo)</option>
+    <option value="gemini">Google Gemini (needs a billing-enabled key)</option>
+  </select>
+  <label for="hfTokenInput" class="mt-5 block text-sm font-semibold">Hugging Face token (free, optional)</label>
+  <p class="mt-1 text-xs text-ink/60">Without a token the free service has very small limits. Create a free token at huggingface.co/settings/tokens (Read access).</p>
+  <div class="mt-2 flex gap-2">
+    <input id="hfTokenInput" type="password" autocomplete="off" spellcheck="false" placeholder="hf_..." class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent">
+    <button id="saveHf" type="button" class="rounded-xl border border-ink/20 px-4 text-sm font-semibold hover:bg-black/5">Save</button>
+  </div>
+  <p id="hfStatus" class="mt-1 text-xs text-ink/60"></p>
+
+  <div id="keyStatus" class="mt-5 inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-800" role="status">
+    <span class="h-2 w-2 rounded-full bg-amber-500"></span><span id="keyStatusText">No API key saved</span>
+  </div>
+
+  <label for="apiKeyInput" class="mt-5 block text-sm font-semibold">Gemini API key</label>
+  <div class="mt-2 flex gap-2">
+    <input id="apiKeyInput" type="password" autocomplete="off" spellcheck="false" placeholder="Paste your API key" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent">
+    <button id="toggleKey" type="button" class="rounded-xl border border-ink/20 px-4 text-sm font-medium hover:bg-black/5" aria-pressed="false">Show</button>
+  </div>
+  <div class="mt-4 flex gap-3">
+    <button id="saveKey" class="flex-1 rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Save API Key</button>
+    <button id="removeKey" class="rounded-xl border border-red-300 px-4 py-3 font-semibold text-red-700 hover:bg-red-50">Remove API Key</button>
+  </div>
+
+  <div class="mt-8 rounded-2xl bg-accent-soft p-4 text-sm leading-relaxed text-ink/80">
+    <p class="font-semibold">Privacy note</p>
+    <p class="mt-1">Your key is stored only in this browser (localStorage), and your photos are sent directly from your browser to Google's Gemini API. Easy Trial has no server.</p>
+    <p class="mt-2">A key kept in browser storage is not protected like a server-side secret and can be read by anyone using this browser. Use a personal key with usage limits, and don't share this app with a key you want to keep private.</p>
+  </div>
+</aside>
+
+<script>
+(() => {
+  'use strict';
+
+  // ---------- Config ----------
+  const STORAGE_KEY = 'easy_trial_gemini_key';
+  // Image-capable Gemini model (gemini-2.5-flash only returns text).
+  const MODEL = 'gemini-2.5-flash-image';
+  const ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+  const PROMPT = 'Virtually try on the provided clothing onto the person. Image 1 is the front view of the garment, Image 2 is the back view, and Image 3 is the person. Generate a realistic photo of the person wearing the garment.';
+  const ALLOWED = ['image/jpeg', 'image/png', 'image/webp'];
+  const MAX_FILE_BYTES = 20 * 1024 * 1024; // reject absurdly large files before decoding
+  const MAX_DIM = 800;
+  // Free engine: a public Hugging Face Space running a try-on model, called via the Gradio client.
+  // If it stops working, open the Space > "Use via API" and update these three values.
+  // Spaces are tried in order (IDM-VTON based). Kolors' public Space has its API closed, so it is not used.
+  const HF_SPACES = ['yisol/IDM-VTON', 'Nymbo/Virtual-Try-On'];
+  const HF_ENDPOINT = '/tryon';
+  const HF_CLIENT_URL = 'https://cdn.jsdelivr.net/npm/@gradio/client/dist/index.min.js';
+  const PROVIDER_KEY = 'easy_trial_provider', HF_TOKEN_KEY = 'easy_trial_hf_token';
+
+  const SLOTS = [
+    { id: 'front', label: 'Front View', hint: 'Upload a clear front photo of the clothing.' },
+    { id: 'back', label: 'Back View', hint: 'Upload a clear back photo of the clothing.' },
+    { id: 'person', label: 'Customer Photo', hint: 'Upload a clear, full-body photo of the person.' }
+  ];
+
+  // ---------- State ----------
+  const files = { front: null, back: null, person: null };
+  const previewUrls = { front: null, back: null, person: null };
+  let resultUrl = null, resultMime = 'image/png', busy = false;
+
+  const $ = (id) => document.getElementById(id);
+
+  // ---------- Alerts ----------
+  function showError(msg, type = 'error') {
+    const el = $('alert');
+    const tone = type === 'error' ? 'bg-red-50 text-red-800 ring-red-200' : 'bg-amber-50 text-amber-900 ring-amber-200';
+    el.className = `mt-6 flex items-start gap-3 rounded-2xl p-4 text-sm ring-1 ${tone}`;
+    el.innerHTML = '';
+    const p = document.createElement('p');
+    p.className = 'flex-1';
+    p.textContent = msg; // textContent avoids injecting API text as HTML
+    const b = document.createElement('button');
+    b.className = 'font-semibold underline';
+    b.textContent = 'Dismiss';
+    b.onclick = hideError;
+    el.append(p, b);
+  }
+  function hideError() { $('alert').className = 'hidden'; $('alert').innerHTML = ''; }
+
+  // ---------- API key ----------
+  const getKey = () => { try { return localStorage.getItem(STORAGE_KEY) || ''; } catch { return ''; } };
+  const getProvider = () => { try { return localStorage.getItem(PROVIDER_KEY) || 'hf'; } catch { return 'hf'; } };
+  const getHfToken = () => { try { return localStorage.getItem(HF_TOKEN_KEY) || ''; } catch { return ''; } };
+  function renderKeyStatus() {
+    const t = getHfToken();
+    $('hfStatus').textContent = t ? `Token saved (••••${t.slice(-4)})` : 'No token saved';
+    const k = getKey();
+    const box = $('keyStatus');
+    box.className = `mt-5 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium ${k ? 'bg-emerald-50 text-emerald-800' : 'bg-amber-50 text-amber-800'}`;
+    box.firstElementChild.className = `h-2 w-2 rounded-full ${k ? 'bg-emerald-500' : 'bg-amber-500'}`;
+    // Show only the last 4 characters, never the full key
+    $('keyStatusText').textContent = k ? `API key saved (••••${k.slice(-4)})` : 'No API key saved';
+    $('keyDot').className = `absolute top-2 right-2 h-2.5 w-2.5 rounded-full ring-2 ring-paper ${k ? 'bg-emerald-500' : 'bg-amber-500'}`;
+    $('keyDot').title = k ? 'API key saved' : 'No API key saved';
+    refreshButton();
+  }
+  function loadSavedApiKey() { renderKeyStatus(); }
+  function saveApiKey() {
+    const v = $('apiKeyInput').value.trim();
+    if (!v) { showError('Paste your Gemini API key before saving.', 'warn'); return; }
+    try { localStorage.setItem(STORAGE_KEY, v); }
+    catch { showError('Your browser blocked storage, so the key could not be saved. Check private-browsing or privacy settings.'); return; }
+    $('apiKeyInput').value = '';
+    hideError(); renderKeyStatus(); closeDrawer();
+  }
+  function removeApiKey() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    $('apiKeyInput').value = ''; renderKeyStatus();
+  }
+
+  // ---------- Drawer ----------
+  function openDrawer() {
+    $('drawer').classList.add('open'); $('overlay').classList.add('open');
+    setTimeout(() => $('apiKeyInput').focus(), 300);
+  }
+  function closeDrawer() {
+    $('drawer').classList.remove('open'); $('overlay').classList.remove('open');
+    $('openSettings').focus();
+  }
+
+  // ---------- Image compression ----------
+  /** Resize to max 800px per side, convert to JPEG (0.85), return Base64 without the data-URL prefix. */
+  async function compressImage(file) {
+    const url = URL.createObjectURL(file);
+    try {
+      const img = await new Promise((resolve, reject) => {
+        const i = new Image();
+        i.onload = () => resolve(i);
+        i.onerror = () => reject(new Error('decode'));
+        i.src = url;
+      });
+      const scale = Math.min(1, MAX_DIM / Math.max(img.naturalWidth, img.naturalHeight));
+      const w = Math.max(1, Math.round(img.naturalWidth * scale));
+      const h = Math.max(1, Math.round(img.naturalHeight * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); // flatten transparent PNG/WebP onto white
+      ctx.drawImage(img, 0, 0, w, h);
+      const blob = await new Promise((res) => canvas.toBlob(res, 'image/jpeg', 0.85));
+      canvas.width = canvas.height = 0; // release canvas memory
+      if (!blob) throw new Error('convert');
+      return await new Promise((resolve, reject) => {
+        const r = new FileReader();
+        r.onload = () => resolve(String(r.result).split(',')[1]);
+        r.onerror = () => reject(new Error('read'));
+        r.readAsDataURL(blob);
+      });
+    } finally { URL.revokeObjectURL(url); }
+  }
+
+  // ---------- Upload cards ----------
+  function buildCards() {
+    $('uploads').innerHTML = SLOTS.map((s) => `
+      <div class="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-black/5">
+        <h2 class="font-display text-lg font-semibold">${s.label}</h2>
+        <p id="${s.id}-hint" class="text-sm text-ink/60">${s.hint}</p>
+        <div id="${s.id}-dz" class="dz mt-3 grid min-h-[16rem] cursor-pointer place-items-center rounded-2xl border-2 border-dashed border-ink/20 p-4 text-center transition hover:border-accent" role="button" tabindex="0" aria-label="${s.label}: choose or drop an image" aria-describedby="${s.id}-hint">
+          <div id="${s.id}-empty">
+            <svg class="mx-auto h-10 w-10 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+            <p class="mt-2 font-medium">Tap to upload or drop a photo</p>
+            <p class="text-xs text-ink/50">JPG, PNG or WebP</p>
+          </div>
+          <img id="${s.id}-img" alt="" class="hidden max-h-[20rem] w-auto max-w-full rounded-xl object-contain">
+        </div>
+        <input id="${s.id}-input" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" tabindex="-1" aria-label="${s.label} file">
+        <div id="${s.id}-actions" class="mt-3 hidden gap-2">
+          <button data-act="replace" class="flex-1 rounded-xl border border-ink/20 px-3 py-2 text-sm font-semibold hover:bg-black/5">Replace</button>
+          <button data-act="remove" class="flex-1 rounded-xl border border-ink/20 px-3 py-2 text-sm font-semibold hover:bg-black/5">Remove</button>
+        </div>
+      </div>`).join('');
+
+    SLOTS.forEach(({ id }) => {
+      const dz = $(`${id}-dz`), input = $(`${id}-input`);
+      dz.addEventListener('click', () => input.click());
+      dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
+      ['dragenter', 'dragover'].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.add('over'); }));
+      ['dragleave', 'drop'].forEach((ev) => dz.addEventListener(ev, (e) => { e.preventDefault(); dz.classList.remove('over'); }));
+      dz.addEventListener('drop', (e) => handleFileUpload(id, e.dataTransfer.files[0]));
+      input.addEventListener('change', () => { handleFileUpload(id, input.files[0]); input.value = ''; });
+      $(`${id}-actions`).addEventListener('click', (e) => {
+        const act = e.target.dataset.act;
+        if (act === 'replace') input.click();
+        if (act === 'remove') clearSlot(id);
+      });
+    });
+  }
+
+  function handleFileUpload(id, file) {
+    if (!file) return;
+    if (!ALLOWED.includes(file.type)) { showError('That file type isn\'t supported. Please upload a JPG, PNG, or WebP image.', 'warn'); return; }
+    if (file.size > MAX_FILE_BYTES) { showError('That image is over 20 MB. Please choose a smaller photo.', 'warn'); return; }
+    hideError();
+    files[id] = file;
+    renderImagePreview(id);
+    refreshButton();
+  }
+  function renderImagePreview(id) {
+    if (previewUrls[id]) URL.revokeObjectURL(previewUrls[id]);
+    previewUrls[id] = URL.createObjectURL(files[id]);
+    const img = $(`${id}-img`);
+    img.src = previewUrls[id];
+    img.alt = `${SLOTS.find((s) => s.id === id).label} preview`;
+    img.classList.remove('hidden'); $(`${id}-empty`).classList.add('hidden');
+    $(`${id}-actions`).classList.replace('hidden', 'flex');
+  }
+  function clearSlot(id) {
+    if (previewUrls[id]) URL.revokeObjectURL(previewUrls[id]);
+    previewUrls[id] = null; files[id] = null;
+    $(`${id}-img`).classList.add('hidden'); $(`${id}-img`).removeAttribute('src');
+    $(`${id}-empty`).classList.remove('hidden');
+    $(`${id}-actions`).classList.replace('flex', 'hidden');
+    refreshButton();
+  }
+
+  // ---------- Validation / button ----------
+  function missingItems() {
+    const m = [];
+    if (!files.front) m.push('the front garment photo');
+    const gem = getProvider() === 'gemini';
+    if (gem && !files.back) m.push('the back garment photo');
+    if (!files.person) m.push('the customer photo');
+    if (gem && !getKey()) m.push('your Gemini API key (open Settings)');
+    return m;
+  }
+  function validateInputs() {
+    const m = missingItems();
+    if (m.length) { showError(`Before generating, please add ${m.join(', ')}.`, 'warn'); return false; }
+    return true;
+  }
+  function refreshButton() {
+    const m = missingItems();
+    $('generateBtn').disabled = busy || m.length > 0;
+    $('generateBtn').setAttribute('aria-disabled', String($('generateBtn').disabled));
+    $('hint').textContent = busy ? '' : (m.length ? `Still needed: ${m.join(', ')}.` : 'Ready to go.');
+  }
+
+  // ---------- Loading ----------
+  function showLoading(on, text) {
+    busy = on;
+    $('loading').classList.toggle('hidden', !on);
+    $('btnSpinner').classList.toggle('hidden', !on);
+    $('btnLabel').textContent = on ? 'Generating…' : 'Generate Virtual Try-On';
+    if (text) $('loadingText').textContent = text;
+    refreshButton();
+  }
+
+  // ---------- Gemini ----------
+  function apiErrorMessage(status, body) {
+    const msg = (body && body.error && body.error.message) || '';
+    const st = (body && body.error && body.error.status) || '';
+    if (/API key not valid|API_KEY_INVALID/i.test(msg) || (status === 400 && /key/i.test(msg))) return 'Google rejected your API key. Open Settings, check the key, and save it again.';
+    if (status === 401 || status === 403) return 'Your API key doesn\'t have permission for this request. Check that the Gemini API is enabled for the key and that image generation is available on your plan.';
+    if (status === 429 || st === 'RESOURCE_EXHAUSTED') return 'You\'ve hit Gemini\'s quota or rate limit. Wait a minute and try again, or check your Google AI Studio usage.';
+    if (status === 404) return 'The Gemini model wasn\'t found for your key. Check the MODEL constant in index.html or try again later.';
+    if (status === 400) return 'Gemini couldn\'t process this request. Try different photos, or the same photos in JPG format.';
+    if (status >= 500) return 'Google\'s servers had a problem. Please try again in a moment.';
+    return 'Something went wrong while contacting Gemini. Please try again.';
+  }
+
+  /** Find the first image part in a Gemini response; throws a friendly Error if none. */
+  function extractGeneratedImage(data) {
+    if (data && data.promptFeedback && data.promptFeedback.blockReason) {
+      throw new Error('Gemini blocked this request for safety reasons. Try different photos (clothed, clear, and appropriate).');
+    }
+    const cand = data && data.candidates && data.candidates[0];
+    if (!cand) throw new Error('Gemini returned no result. Please try again.');
+    const parts = (cand.content && cand.content.parts) || [];
+    for (const p of parts) {
+      const inline = p.inlineData || p.inline_data;
+      if (inline && inline.data) return { base64: inline.data, mime: inline.mimeType || inline.mime_type || 'image/png' };
+    }
+    if (/SAFETY|PROHIBITED|BLOCK|IMAGE_OTHER/i.test(cand.finishReason || '')) {
+      throw new Error('Gemini filtered this result for safety reasons. Try different photos.');
+    }
+    const text = parts.map((p) => p.text).filter(Boolean).join(' ').slice(0, 200);
+    throw new Error(text ? `Gemini replied with text instead of an image: "${text}"` : 'Gemini didn\'t return an image. Please try again.');
+  }
+
+  function base64ToBlob(b64, mime) {
+    const bin = atob(b64), bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new Blob([bytes], { type: mime });
+  }
+
+  function hfErrorMessage(err) {
+    const m = String((err && (err.message || err.detail || err.title)) || err || '');
+    if (/quota|zerogpu|exceeded|limit|rate/i.test(m)) return 'The free try-on service has run out of free GPU time for now. Add a free Hugging Face token in Settings, or try again later.';
+    if (/queue|busy|capacity|overload/i.test(m)) return 'The free try-on service is busy right now. Please try again in a minute.';
+    if (/sleep|runtime|not found|404|build|paused|private/i.test(m)) return 'The free try-on Space is offline or has changed. Try again later, or update HF_SPACES in index.html.';
+    return `The free try-on service returned an error. Please try again. (${m.slice(0, 140)})`;
+  }
+
+  /** Free path: Hugging Face Space via the Gradio client (front view + person only). */
+  async function generateFree() {
+    try {
+      let garment, person;
+      try { [garment, person] = await Promise.all([files.front, files.person].map(compressImage)); }
+      catch { throw new Error('One of your images couldn\'t be read or compressed. Try re-saving it as a JPG or PNG.'); }
+      showLoading(true, 'Creating your virtual try-on…');
+      let mod;
+      try { mod = await import(HF_CLIENT_URL); }
+      catch { throw new Error('Couldn\'t load the free try-on connector. Check your internet connection.'); }
+      const token = getHfToken();
+      let out = null, lastErr = null;
+      for (const space of HF_SPACES) { // fall back to the next Space if one is offline or has changed
+        try {
+          const client = await mod.Client.connect(space, token ? { hf_token: token } : {});
+          out = await client.predict(HF_ENDPOINT, {
+            dict: { background: base64ToBlob(person, 'image/jpeg'), layers: [], composite: null },
+            garm_img: base64ToBlob(garment, 'image/jpeg'),
+            garment_des: 'a garment',
+            is_checked: true,        // auto-detect the area to replace
+            is_checked_crop: false,
+            denoise_steps: 30,
+            seed: 42
+          });
+          break;
+        } catch (e) { lastErr = e; }
+      }
+      if (!out) throw lastErr || new Error('The free try-on service is unavailable.');
+      const first = out && out.data && out.data[0];
+      const url = first && (first.url || (typeof first === 'string' ? first : ''));
+      if (!url) throw new Error('The free model finished but returned no image. Try different photos.');
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('The try-on finished but the image couldn\'t be downloaded. Please try again.');
+      const blob = await r.blob();
+      resultMime = blob.type || 'image/png';
+      resultUrl = URL.createObjectURL(blob);
+      $('resultImg').src = resultUrl;
+      $('result').classList.remove('hidden');
+      $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showError(err instanceof Error && !/^(\w+ )?Error$/.test(err.message) && /couldn|returned|finished|try-on/i.test(err.message) ? err.message : hfErrorMessage(err));
+    } finally { showLoading(false); }
+  }
+
+  async function generateVirtualTryOn() {
+    if (busy) return; // prevent duplicate requests
+    if (!validateInputs()) return;
+    hideError(); resetResult();
+    showLoading(true, 'Preparing your images…');
+    if (getProvider() === 'hf') { await generateFree(); return; }
+    try {
+      let [front, back, person] = [null, null, null];
+      try { [front, back, person] = await Promise.all([files.front, files.back, files.person].map(compressImage)); }
+      catch { throw new Error('One of your images couldn\'t be read or compressed. Try re-saving it as a JPG or PNG and upload it again.'); }
+
+      showLoading(true, 'Creating your virtual try-on…');
+      const img = (data) => ({ inlineData: { mimeType: 'image/jpeg', data } });
+      let res;
+      try {
+        res = await fetch(`${ENDPOINT}?key=${encodeURIComponent(getKey())}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: PROMPT }, img(front), img(back), img(person)] }],
+            generationConfig: { responseModalities: ['IMAGE'] }
+          })
+        });
+      } catch { throw new Error('Couldn\'t reach Google. Check your internet connection and try again.'); }
+      front = back = person = null; // let large strings be garbage collected
+
+      let data = null;
+      try { data = await res.json(); } catch {}
+      if (!res.ok) throw new Error(apiErrorMessage(res.status, data));
+
+      const { base64, mime } = extractGeneratedImage(data);
+      resultMime = mime;
+      resultUrl = URL.createObjectURL(base64ToBlob(base64, mime));
+      $('resultImg').src = resultUrl;
+      $('result').classList.remove('hidden');
+      $('result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showError(err && err.message ? err.message : 'Something unexpected happened. Please try again.');
+    } finally { showLoading(false); }
+  }
+
+  // ---------- Result ----------
+  function downloadGeneratedImage() {
+    if (!resultUrl) return;
+    const ext = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' }[resultMime] || 'png';
+    const a = document.createElement('a');
+    a.href = resultUrl; a.download = `easy-trial-virtual-try-on.${ext}`;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  function resetResult() {
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    resultUrl = null;
+    $('resultImg').removeAttribute('src');
+    $('result').classList.add('hidden');
+  }
+
+  // ---------- Init ----------
+  buildCards();
+  loadSavedApiKey();
+  $('openSettings').addEventListener('click', openDrawer);
+  $('closeSettings').addEventListener('click', closeDrawer);
+  $('overlay').addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && $('drawer').classList.contains('open')) closeDrawer(); });
+  $('providerSel').value = getProvider();
+  $('providerSel').addEventListener('change', () => { try { localStorage.setItem(PROVIDER_KEY, $('providerSel').value); } catch {} refreshButton(); });
+  $('saveHf').addEventListener('click', () => {
+    const v = $('hfTokenInput').value.trim();
+    try { v ? localStorage.setItem(HF_TOKEN_KEY, v) : localStorage.removeItem(HF_TOKEN_KEY); } catch {}
+    $('hfTokenInput').value = ''; renderKeyStatus();
+  });
+  $('saveKey').addEventListener('click', saveApiKey);
+  $('removeKey').addEventListener('click', removeApiKey);
+  $('apiKeyInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') saveApiKey(); });
+  $('toggleKey').addEventListener('click', () => {
+    const show = $('apiKeyInput').type === 'password';
+    $('apiKeyInput').type = show ? 'text' : 'password';
+    $('toggleKey').textContent = show ? 'Hide' : 'Show';
+    $('toggleKey').setAttribute('aria-pressed', String(show));
+  });
+  $('generateBtn').addEventListener('click', generateVirtualTryOn);
+  $('downloadBtn').addEventListener('click', downloadGeneratedImage);
+  $('againBtn').addEventListener('click', () => { resetResult(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+})();
+</script>
+</body>
+</html>
