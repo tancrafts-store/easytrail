@@ -30,6 +30,7 @@
   .spinner { width: 1.25rem; height: 1.25rem; border: 3px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 9999px; animation: spin .8s linear infinite; }
   .spinner.big { width: 2.5rem; height: 2.5rem; border-color: #E0DBF8; border-top-color: #5B47D6; }
   @keyframes spin { to { transform: rotate(360deg); } }
+  @media print { body * { visibility: hidden; } #billOut, #billOut * { visibility: visible; } #billOut { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; } .no-print { display: none !important; } }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   }
@@ -55,14 +56,22 @@
 </header>
 
 <!-- Main -->
-<main class="max-w-6xl mx-auto px-4 pt-28 pb-16">
+<main class="max-w-6xl mx-auto px-4 pt-24 pb-16">
+  <nav class="flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Sections">
+    <button data-tab="tryon" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Try-On</button>
+    <button data-tab="product" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Product Images</button>
+    <button data-tab="billing" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Billing</button>
+    <button data-tab="customers" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Customers</button>
+    <button data-tab="marketing" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Marketing</button>
+  </nav>
+  <div id="alert" role="alert" aria-live="assertive" class="mt-6 hidden"></div>
+
+  <div id="tab-tryon" data-panel class="mt-8">
   <section class="max-w-2xl">
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Your virtual fitting room</h1>
     <p class="mt-3 text-base sm:text-lg text-ink/70">Upload your garment and a customer photo to create a realistic virtual try-on.</p>
   </section>
 
-  <!-- Alert region -->
-  <div id="alert" role="alert" aria-live="assertive" class="mt-6 hidden"></div>
 
   <!-- Upload cards (rendered by JS) -->
   <section id="uploads" class="mt-8 grid gap-5 md:grid-cols-3" aria-label="Image uploads"></section>
@@ -95,7 +104,95 @@
       <button id="againBtn" class="rounded-xl border border-ink/20 px-6 py-3 font-semibold transition hover:bg-black/5">Generate Another</button>
     </div>
   </section>
+  </div>
+
+  <!-- Product images -->
+  <div id="tab-product" data-panel class="mt-8 hidden">
+    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Product images</h1>
+    <p class="mt-3 max-w-2xl text-ink/70">Turn a garment photo into a clean, shop-ready product image. This uses Google Gemini, so it needs a billing-enabled API key (see Settings).</p>
+    <div class="mt-6 grid gap-5 md:grid-cols-2">
+      <div>
+        <div id="productUpload"></div>
+        <label for="prodStyle" class="mt-4 block text-sm font-semibold">Style</label>
+        <select id="prodStyle" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-4 py-3">
+          <option value="studio">Studio shot on white background</option>
+          <option value="ghost">Ghost mannequin (3D shape)</option>
+          <option value="flat">Flat lay, from above</option>
+        </select>
+        <button id="prodBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark disabled:opacity-45">Generate Product Image</button>
+        <p id="prodStatus" role="status" aria-live="polite" class="mt-2 text-sm text-ink/60"></p>
+      </div>
+      <div id="prodResult" class="hidden rounded-3xl bg-white p-5 shadow-xl shadow-black/5 ring-1 ring-black/5">
+        <h2 class="font-display text-xl font-bold">Your product image</h2>
+        <div class="mt-3 flex justify-center rounded-2xl bg-paper p-2"><img id="prodImg" alt="Generated product image" class="max-h-[60vh] w-auto max-w-full rounded-xl object-contain"></div>
+        <p class="mt-3 text-sm text-ink/60">AI-generated. Check that colors and details match the real garment before using it.</p>
+        <button id="prodDl" class="mt-3 rounded-xl bg-accent px-6 py-3 font-semibold text-white hover:bg-accent-dark">Download Image</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Billing -->
+  <div id="tab-billing" data-panel class="mt-8 hidden">
+    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Billing</h1>
+    <p class="mt-3 max-w-2xl text-ink/70">Create a bill and send it to your customer on WhatsApp. Customers and purchases are saved on this device.</p>
+    <div class="mt-6 grid gap-5 lg:grid-cols-2">
+      <div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+        <label for="bName" class="block text-sm font-semibold">Customer name</label>
+        <input id="bName" autocomplete="off" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent">
+        <label for="bPhone" class="mt-3 block text-sm font-semibold">WhatsApp number</label>
+        <input id="bPhone" type="tel" inputmode="tel" list="custPhones" placeholder="e.g. 98765 43210" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent">
+        <datalist id="custPhones"></datalist>
+        <p class="mt-4 text-sm font-semibold">Items</p>
+        <div id="items" class="mt-2 space-y-2"></div>
+        <button id="addItem" type="button" class="mt-3 rounded-xl border border-ink/20 px-4 py-2 text-sm font-semibold hover:bg-black/5">+ Add item</button>
+        <div class="mt-4 grid grid-cols-3 gap-2">
+          <div><label for="bDisc" class="text-xs font-semibold">Discount</label><input id="bDisc" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent"></div>
+          <div><label for="bGst" class="text-xs font-semibold">GST %</label><select id="bGst" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option value="0">None</option><option>5</option><option>12</option><option>18</option><option>28</option></select></div>
+          <div><label for="bPay" class="text-xs font-semibold">Payment</label><select id="bPay" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option></select></div>
+        </div>
+        <p class="mt-4 flex justify-between text-lg font-bold"><span>Total</span><span id="billTotal">0.00</span></p>
+        <button id="billBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark active:scale-[.98]">Generate Bill &amp; Open WhatsApp</button>
+        <p class="mt-2 text-xs text-ink/60">WhatsApp opens with the bill ready to send. You tap Send there.</p>
+      </div>
+      <div id="billOut" class="hidden self-start rounded-3xl bg-white p-5 shadow-xl shadow-black/5 ring-1 ring-black/5"></div>
+    </div>
+  </div>
+
+  <!-- Customers -->
+  <div id="tab-customers" data-panel class="mt-8 hidden">
+    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Customers</h1>
+    <label for="custSearch" class="sr-only">Search customers</label>
+    <input id="custSearch" type="search" placeholder="Search by name or number" class="mt-5 w-full max-w-md rounded-xl border border-ink/20 bg-white px-4 py-3 focus:border-accent">
+    <div id="custList" class="mt-5 grid gap-3 md:grid-cols-2"></div>
+  </div>
+  <div id="tab-marketing" data-panel class="mt-8 hidden">
+    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Marketing</h1>
+    <p class="mt-3 max-w-2xl text-ink/70">Write your offer or message. Easy Trial makes a PDF with your message and all customer details, then opens WhatsApp to our marketing team, who take it from there.</p>
+    <div class="mt-5 max-w-2xl rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/5">
+      <label for="mktText" class="block text-sm font-semibold">Message for your customers</label>
+      <textarea id="mktText" rows="5" maxlength="1000" placeholder="e.g. Festive sale: flat 20% off on all shirts this week!" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></textarea>
+      <p class="mt-2 text-sm text-ink/60"><span id="mktCount">0</span> saved customers will be included. Only send promotions to customers who agreed to receive them.</p>
+      <button id="mktBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark">Create PDF &amp; send to marketing team</button>
+      <p id="mktStatus" role="status" aria-live="polite" class="mt-3 text-sm text-ink/70"></p>
+      <p class="mt-2 text-xs text-ink/50">The PDF supports English letters only. Your full message is also placed in the WhatsApp chat.</p>
+    </div>
+  </div>
 </main>
+
+<!-- Plan-ended lock screen -->
+<div id="planModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-ink/80 p-4" role="alertdialog" aria-modal="true" aria-labelledby="planTitle">
+  <div class="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl">
+    <h2 id="planTitle" class="font-display text-2xl font-bold">Your plan has ended</h2>
+    <p class="mt-2 text-ink/70">To keep using Easy Trial, please contact us to renew: <b>+91 98836 48195</b></p>
+    <div class="mt-4 grid grid-cols-2 gap-3">
+      <a href="tel:+919883648195" class="rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Call</a>
+      <a href="https://wa.me/919883648195?text=Hello%2C%20I%20want%20to%20renew%20my%20Easy%20Trial%20plan." target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700">WhatsApp</a>
+    </div>
+    <label for="planCode" class="mt-5 block text-left text-sm font-semibold">Have a recharge code?</label>
+    <div class="mt-1 flex gap-2"><input id="planCode" autocomplete="off" autocapitalize="characters" placeholder="Enter code" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"><button id="planCodeBtn" type="button" class="rounded-xl border border-ink/20 px-4 font-semibold hover:bg-black/5">Activate</button></div>
+    <p id="planCodeMsg" role="alert" class="mt-2 text-sm text-red-700"></p>
+  </div>
+</div>
 
 <!-- Settings drawer -->
 <div id="overlay" class="overlay fixed inset-0 z-40 bg-black/40" aria-hidden="true"></div>
@@ -108,6 +205,34 @@
   </div>
   <p class="mt-3 text-sm text-ink/70">Easy Trial uses a Google Gemini API key to generate try-on images. You can create one in Google AI Studio.</p>
 
+  <div class="mt-5 rounded-2xl bg-paper p-4">
+    <p class="text-sm font-semibold">Shop details (printed on bills)</p>
+    <label for="shopName" class="mt-3 block text-sm">Shop name</label>
+    <input id="shopName" autocomplete="off" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent">
+    <div class="mt-3 grid grid-cols-2 gap-3">
+      <div><label for="shopCc" class="block text-sm">Country code</label><input id="shopCc" inputmode="numeric" placeholder="91" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></div>
+      <div><label for="shopCur" class="block text-sm">Currency symbol</label><input id="shopCur" placeholder="₹" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></div>
+    </div>
+    <details class="mt-3 rounded-xl border border-ink/10 bg-white p-3">
+      <summary class="cursor-pointer text-sm font-semibold">More bill details (optional)</summary>
+      <label for="shopAddr" class="mt-3 block text-sm">Address</label>
+      <textarea id="shopAddr" rows="2" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent"></textarea>
+      <label for="shopPhone" class="mt-3 block text-sm">Shop phone</label>
+      <input id="shopPhone" type="tel" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
+      <label for="shopEmail" class="mt-3 block text-sm">Email</label>
+      <input id="shopEmail" type="email" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
+      <label for="shopGstin" class="mt-3 block text-sm">GSTIN (makes the bill a Tax Invoice)</label>
+      <input id="shopGstin" maxlength="15" autocapitalize="characters" placeholder="22AAAAA0000A1Z5" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
+      <label for="shopPan" class="mt-3 block text-sm">PAN</label>
+      <input id="shopPan" maxlength="10" autocapitalize="characters" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
+      <label for="shopUpi" class="mt-3 block text-sm">UPI ID</label>
+      <input id="shopUpi" placeholder="shop@upi" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
+      <label for="shopTerms" class="mt-3 block text-sm">Terms &amp; conditions</label>
+      <textarea id="shopTerms" rows="2" placeholder="e.g. Goods once sold will not be taken back." class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent"></textarea>
+    </details>
+    <p id="shopMsg" role="alert" class="mt-2 text-sm text-red-700"></p>
+    <button id="saveShop" type="button" class="mt-3 w-full rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Save shop details</button>
+  </div>
   <label for="providerSel" class="mt-5 block text-sm font-semibold">Image engine</label>
   <select id="providerSel" class="mt-2 w-full rounded-xl border border-ink/20 bg-white px-4 py-3">
     <option value="hf">Free: Hugging Face (uses front view + customer photo)</option>
@@ -133,6 +258,14 @@
   <div class="mt-4 flex gap-3">
     <button id="saveKey" class="flex-1 rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Save API Key</button>
     <button id="removeKey" class="rounded-xl border border-red-300 px-4 py-3 font-semibold text-red-700 hover:bg-red-50">Remove API Key</button>
+  </div>
+
+  <div class="mt-5 rounded-2xl bg-paper p-4">
+    <p class="text-sm font-semibold">Plan</p>
+    <p id="planStatus" class="mt-1 text-sm text-ink/70"></p>
+    <label for="setCode" class="mt-3 block text-sm">Recharge code</label>
+    <div class="mt-1 flex gap-2"><input id="setCode" autocomplete="off" autocapitalize="characters" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"><button id="setCodeBtn" type="button" class="rounded-xl border border-ink/20 px-4 text-sm font-semibold hover:bg-black/5">Apply</button></div>
+    <p id="setCodeMsg" class="mt-1 text-sm text-ink/70"></p>
   </div>
 
   <div class="mt-8 rounded-2xl bg-accent-soft p-4 text-sm leading-relaxed text-ink/80">
@@ -173,10 +306,12 @@
     { id: 'back', label: 'Back View (optional)', hint: 'Optional: a clear back photo of the clothing.' },
     { id: 'person', label: 'Customer Photo', hint: 'Upload a clear, full-body photo of the person.' }
   ];
+  const PSLOT = { id: 'product', label: 'Garment photo', hint: 'Upload a clear photo of the garment.' };
+  const ALL_SLOTS = [...SLOTS, PSLOT];
 
   // ---------- State ----------
-  const files = { front: null, back: null, person: null };
-  const previewUrls = { front: null, back: null, person: null };
+  const files = { front: null, back: null, person: null, product: null };
+  const previewUrls = { front: null, back: null, person: null, product: null };
   let resultUrl = null, resultMime = 'image/png', busy = false;
 
   const $ = (id) => document.getElementById(id);
@@ -271,8 +406,8 @@
   }
 
   // ---------- Upload cards ----------
-  function buildCards() {
-    $('uploads').innerHTML = SLOTS.map((s) => `
+  function buildCards(list, cont) {
+    $(cont).innerHTML = list.map((s) => `
       <div class="rounded-3xl bg-white p-4 shadow-sm ring-1 ring-black/5">
         <h2 class="font-display text-lg font-semibold">${s.label}</h2>
         <p id="${s.id}-hint" class="text-sm text-ink/60">${s.hint}</p>
@@ -291,7 +426,7 @@
         </div>
       </div>`).join('');
 
-    SLOTS.forEach(({ id }) => {
+    list.forEach(({ id }) => {
       const dz = $(`${id}-dz`), input = $(`${id}-input`);
       dz.addEventListener('click', () => input.click());
       dz.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); } });
@@ -321,7 +456,7 @@
     previewUrls[id] = URL.createObjectURL(files[id]);
     const img = $(`${id}-img`);
     img.src = previewUrls[id];
-    img.alt = `${SLOTS.find((s) => s.id === id).label} preview`;
+    img.alt = `${ALL_SLOTS.find((s) => s.id === id).label} preview`;
     img.classList.remove('hidden'); $(`${id}-empty`).classList.add('hidden');
     $(`${id}-actions`).classList.replace('hidden', 'flex');
   }
@@ -450,7 +585,7 @@
   }
 
   async function generateVirtualTryOn() {
-    if (busy) return; // prevent duplicate requests
+    if (busy || planLocked()) return; // prevent duplicate requests
     if (!validateInputs()) return;
     hideError(); resetResult();
     showLoading(true, 'Preparing your images…');
@@ -506,8 +641,306 @@
     $('result').classList.add('hidden');
   }
 
+  // ================= Tabs =================
+  function showTab(name) {
+    document.querySelectorAll('[data-panel]').forEach((el) => el.classList.toggle('hidden', el.id !== `tab-${name}`));
+    document.querySelectorAll('.tabbtn').forEach((b) => {
+      const on = b.dataset.tab === name;
+      b.setAttribute('aria-selected', String(on));
+      b.className = `tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold ${on ? 'bg-ink text-white' : 'bg-white ring-1 ring-black/10 hover:bg-black/5'}`;
+    });
+    if (name === 'customers') renderCustomers();
+    if (name === 'marketing') $('mktCount').textContent = Object.keys(readJ(LS.cust, {})).length;
+    hideError();
+  }
+
+  // ================= Local data =================
+  const LS = { shop: 'easy_trial_shop', cust: 'easy_trial_customers', bills: 'easy_trial_bills' };
+  const readJ = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch { return d; } };
+  const writeJ = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
+  const SHOP_F = { address: 'shopAddr', phone: 'shopPhone', email: 'shopEmail', gstin: 'shopGstin', pan: 'shopPan', upi: 'shopUpi', terms: 'shopTerms' };
+  const getShop = () => ({ name: '', cc: '91', cur: '₹', address: '', phone: '', email: '', gstin: '', pan: '', upi: '', terms: '', ...readJ(LS.shop, {}) });
+  const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fm = (cur, n) => `${cur}${Number(n).toFixed(2)}`;
+  const fmtDate = (iso) => new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  function saveShop() {
+    const cc = $('shopCc').value.replace(/\D/g, '') || '91';
+    const sh = { name: $('shopName').value.trim(), cc, cur: $('shopCur').value.trim() || '₹' };
+    for (const [k, id] of Object.entries(SHOP_F)) sh[k] = $(id).value.trim();
+    sh.gstin = sh.gstin.toUpperCase(); sh.pan = sh.pan.toUpperCase();
+    if (sh.gstin && !/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z\d]Z[A-Z\d]$/.test(sh.gstin)) { $('shopMsg').textContent = 'That GSTIN doesn\'t look valid (15 characters). Please check it.'; return; }
+    if (!writeJ(LS.shop, sh)) { $('shopMsg').textContent = 'Couldn\'t save (browser storage is blocked).'; return; }
+    $('shopMsg').textContent = ''; $('shopCc').value = cc; $('shopGstin').value = sh.gstin; $('shopPan').value = sh.pan; closeDrawer();
+  }
+  function loadShop() {
+    const sh = getShop(); $('shopName').value = sh.name; $('shopCc').value = sh.cc; $('shopCur').value = sh.cur;
+    for (const [k, id] of Object.entries(SHOP_F)) $(id).value = sh[k];
+  }
+
+  // ================= Billing =================
+  const INP = 'min-w-0 rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent';
+  function addItemRow() {
+    const d = document.createElement('div');
+    d.className = 'grid grid-cols-12 gap-2 items-center';
+    d.innerHTML = `<input class="it-name col-span-12 sm:col-span-6 ${INP}" placeholder="Item (e.g. Blue shirt)" aria-label="Item name">
+      <input class="it-qty col-span-4 sm:col-span-2 ${INP}" type="number" min="1" value="1" inputmode="numeric" aria-label="Quantity">
+      <input class="it-price col-span-6 sm:col-span-3 ${INP}" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Price" aria-label="Unit price">
+      <button type="button" class="it-del col-span-2 sm:col-span-1 h-11 rounded-xl hover:bg-black/5" aria-label="Remove item">✕</button>`;
+    $('items').appendChild(d);
+  }
+  function readItems() {
+    return [...$('items').children].map((r) => ({
+      name: r.querySelector('.it-name').value.trim(),
+      qty: Math.max(1, parseInt(r.querySelector('.it-qty').value, 10) || 1),
+      price: parseFloat(r.querySelector('.it-price').value) || 0
+    })).filter((i) => i.name && i.price > 0);
+  }
+  function calc(items) {
+    const sub = items.reduce((t, i) => t + i.qty * i.price, 0);
+    const disc = Math.min(sub, Math.max(0, parseFloat($('bDisc').value) || 0));
+    const rate = parseFloat($('bGst').value) || 0, gst = (sub - disc) * rate / 100;
+    return { sub, disc, rate, cgst: gst / 2, sgst: gst / 2, total: sub - disc + gst };
+  }
+  function updateTotal() { $('billTotal').textContent = fm(getShop().cur, calc(readItems()).total); }
+  function normPhone(raw) {
+    let d = String(raw).replace(/\D/g, '').replace(/^0+/, '');
+    if (d.length <= 10) d = getShop().cc + d; // add country code to local numbers
+    return d;
+  }
+  const invNo = (b) => `INV-${String(b.no).padStart(4, '0')}`;
+  const billText = (b) => {
+    const i = b.info || {}, c = b.cur, sub = b.sub ?? b.total, L = [`*${b.shop}*`];
+    if (i.address) L.push(i.address);
+    const ct = [i.phone && `Ph: ${i.phone}`, i.email].filter(Boolean).join(' | '); if (ct) L.push(ct);
+    if (i.gstin) L.push(`GSTIN: ${i.gstin}`); if (i.pan) L.push(`PAN: ${i.pan}`);
+    L.push('', i.gstin ? '*TAX INVOICE*' : '*CASH MEMO*', `Bill No: ${invNo(b)}`, `Date: ${fmtDate(b.date)}`, `Customer: ${b.name} (+${b.phone})`, '------------------');
+    b.items.forEach((x, n) => L.push(`${n + 1}. ${x.name}`, `    ${x.qty} x ${fm(c, x.price)} = ${fm(c, x.qty * x.price)}`));
+    L.push('------------------', `Subtotal: ${fm(c, sub)}`);
+    if (b.disc > 0) L.push(`Discount: -${fm(c, b.disc)}`);
+    if (b.rate > 0) L.push(`CGST @ ${b.rate / 2}%: ${fm(c, b.cgst)}`, `SGST @ ${b.rate / 2}%: ${fm(c, b.sgst)}`);
+    L.push(`*Grand Total: ${fm(c, b.total)}*`);
+    if (b.pay) L.push(`Payment: ${b.pay}`); if (i.upi) L.push(`UPI ID: ${i.upi}`);
+    if (i.terms) L.push('', `Terms: ${i.terms}`);
+    L.push('', `Thank you for shopping with ${b.shop}! 🙏`, 'We truly appreciate your visit and hope to see you again soon.');
+    return L.join('\n');
+  };
+  const waUrl = (b) => `https://wa.me/${b.phone}?text=${encodeURIComponent(billText(b))}`;
+  function openWhatsApp(b) {
+    const w = window.open(waUrl(b), '_blank');
+    if (w) w.opener = null; else showError('Your browser blocked WhatsApp from opening. Use "Send on WhatsApp" on the bill.', 'warn');
+  }
+  function renderBill(b) {
+    const i = b.info || {}, c = b.cur, sub = b.sub ?? b.total;
+    const row = (l, v, cls = '') => `<p class="flex justify-between py-0.5 ${cls}"><span>${l}</span><span>${v}</span></p>`;
+    const el = $('billOut');
+    el.innerHTML = `<p class="text-center text-xs font-bold tracking-widest text-ink/60">${i.gstin ? 'TAX INVOICE' : 'CASH MEMO'}</p>
+      <h2 class="mt-1 text-center font-display text-2xl font-bold">${esc(b.shop)}</h2>
+      <div class="text-center text-sm text-ink/70">${i.address ? `<p>${esc(i.address)}</p>` : ''}${[i.phone && `Ph: ${esc(i.phone)}`, i.email && esc(i.email)].filter(Boolean).join(' · ')}${i.gstin ? `<p>GSTIN: ${esc(i.gstin)}</p>` : ''}${i.pan ? `<p>PAN: ${esc(i.pan)}</p>` : ''}</div>
+      <div class="mt-3 flex justify-between border-y border-ink/15 py-2 text-sm"><span>Bill No: <b>${invNo(b)}</b></span><span>${fmtDate(b.date)}</span></div>
+      <p class="mt-2 text-sm">Customer: <b>${esc(b.name)}</b> <span class="text-ink/60">· +${esc(b.phone)}</span></p>
+      <ul class="mt-2 divide-y divide-black/5 text-sm">${b.items.map((x) => `<li class="py-2"><div class="font-medium">${esc(x.name)}</div><div class="flex justify-between text-ink/70"><span>${x.qty} × ${fm(c, x.price)}</span><span>${fm(c, x.qty * x.price)}</span></div></li>`).join('')}</ul>
+      <div class="mt-2 border-t border-ink/20 pt-2 text-sm">${row('Subtotal', fm(c, sub))}${b.disc > 0 ? row('Discount', '-' + fm(c, b.disc)) : ''}${b.rate > 0 ? row(`CGST @ ${b.rate / 2}%`, fm(c, b.cgst)) + row(`SGST @ ${b.rate / 2}%`, fm(c, b.sgst)) : ''}${row('Grand Total', fm(c, b.total), 'text-lg font-bold')}</div>
+      <p class="mt-2 text-sm text-ink/70">${b.pay ? `Payment: ${esc(b.pay)}` : ''}${i.upi ? ` · UPI: ${esc(i.upi)}` : ''}</p>
+      ${i.terms ? `<p class="mt-2 text-xs text-ink/60">Terms: ${esc(i.terms)}</p>` : ''}
+      <p class="mt-4 text-center text-sm font-medium">Thank you for shopping with ${esc(b.shop)}! 🙏<br><span class="font-normal text-ink/60">We truly appreciate your visit and hope to see you again soon.</span></p>
+      <div class="no-print mt-4 flex flex-col gap-2 sm:flex-row">
+        <a href="${waUrl(b)}" target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-5 py-3 text-center font-semibold text-white hover:bg-emerald-700">Send on WhatsApp</a>
+        <button id="printBill" class="rounded-xl border border-ink/20 px-5 py-3 font-semibold hover:bg-black/5">Print / Save PDF</button>
+      </div>`;
+    el.classList.remove('hidden');
+    $('printBill').onclick = () => window.print();
+  }
+  function generateBill() {
+    if (planLocked()) return;
+    const shop = getShop();
+    if (!shop.name) { showError('Add your shop name in Settings first, so it appears on the bill.', 'warn'); openDrawer(); return; }
+    const name = $('bName').value.trim(), phone = normPhone($('bPhone').value), items = readItems();
+    if (!name) { showError('Enter the customer\'s name.', 'warn'); return; }
+    if (phone.length < 11 || phone.length > 15) { showError('Enter a valid WhatsApp number (digits only, with or without country code).', 'warn'); return; }
+    if (!items.length) { showError('Add at least one item with a name and a price.', 'warn'); return; }
+    hideError();
+    const bills = readJ(LS.bills, []), cust = readJ(LS.cust, {});
+    const info = { address: shop.address, phone: shop.phone, email: shop.email, gstin: shop.gstin, pan: shop.pan, upi: shop.upi, terms: shop.terms };
+    const bill = { no: bills.reduce((m, x) => Math.max(m, x.no), 0) + 1, date: new Date().toISOString(), shop: shop.name, cur: shop.cur, info, name, phone, items, ...calc(items), pay: $('bPay').value };
+    bills.push(bill);
+    cust[phone] = { name, phone, first: (cust[phone] && cust[phone].first) || bill.date };
+    if (!(writeJ(LS.bills, bills) && writeJ(LS.cust, cust))) showError('The bill was made, but couldn\'t be saved on this device (storage blocked or full).', 'warn');
+    renderBill(bill); renderCustomers();
+    $('bName').value = ''; $('bPhone').value = ''; $('bDisc').value = ''; $('bGst').value = '0'; $('items').innerHTML = ''; addItemRow(); updateTotal();
+    openWhatsApp(bill); // runs inside the click, so the browser allows the popup
+  }
+
+  // ================= Customers =================
+  function renderCustomers() {
+    const q = $('custSearch').value.trim().toLowerCase();
+    const all = Object.values(readJ(LS.cust, {})), bills = readJ(LS.bills, []);
+    $('custPhones').innerHTML = all.map((c) => `<option value="${esc(c.phone)}">${esc(c.name)}</option>`).join('');
+    const list = all.filter((c) => !q || c.name.toLowerCase().includes(q) || c.phone.includes(q.replace(/\D/g, '') || '\u0000'));
+    $('custList').innerHTML = list.length ? list.map((c) => {
+      const mine = bills.filter((b) => b.phone === c.phone).reverse();
+      const total = mine.reduce((t, b) => t + b.total, 0), cur = mine[0] ? mine[0].cur : getShop().cur;
+      return `<details class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5"><summary class="cursor-pointer font-semibold">${esc(c.name)} <span class="font-normal text-ink/60">· +${esc(c.phone)} · ${mine.length} bill${mine.length === 1 ? '' : 's'} · ${fm(cur, total)}</span></summary>
+        <ul class="mt-3 space-y-2 text-sm">${mine.map((b) => `<li class="rounded-xl bg-paper p-3"><div class="flex justify-between"><span>${fmtDate(b.date)} · INV-${String(b.no).padStart(4, '0')}</span><b>${fm(b.cur, b.total)}</b></div><div class="text-ink/70">${b.items.map((i) => `${esc(i.name)} ×${i.qty}`).join(', ')}</div></li>`).join('')}</ul>
+        <div class="mt-3 flex flex-wrap gap-2" data-phone="${esc(c.phone)}">
+          <button data-act="bill" class="rounded-xl bg-accent px-4 py-2 text-sm font-semibold text-white">New bill</button>
+          <button data-act="del" class="rounded-xl border border-red-300 px-4 py-2 text-sm font-semibold text-red-700">Delete</button></div></details>`;
+    }).join('') : '<p class="text-ink/60">No customers yet. They are saved automatically when you create a bill.</p>';
+  }
+  function onCustomerClick(e) {
+    const act = e.target.dataset.act, phone = e.target.closest('[data-phone]') && e.target.closest('[data-phone]').dataset.phone;
+    if (!act || !phone) return;
+    const cust = readJ(LS.cust, {});
+    if (act === 'bill') { showTab('billing'); $('bName').value = cust[phone].name; $('bPhone').value = phone; }
+    if (act === 'del' && confirm('Delete this customer and their purchase history from this device?')) {
+      delete cust[phone]; writeJ(LS.cust, cust); writeJ(LS.bills, readJ(LS.bills, []).filter((b) => b.phone !== phone)); renderCustomers();
+    }
+  }
+
+  // ================= Product images (Gemini) =================
+  const STYLES = {
+    studio: 'Create a professional e-commerce product photo of the garment in the provided image: the garment alone, centered, on a clean pure white background, soft even studio lighting, sharp detail, wrinkles removed, exact color and print. No person, no text.',
+    ghost: 'Create a professional e-commerce ghost-mannequin product photo of the garment in the provided image: the garment shown with natural 3D shape as if worn by an invisible mannequin, front view, on a clean white background, soft studio lighting, exact color and print. No person, no text.',
+    flat: 'Create a professional flat-lay product photo of the garment in the provided image: neatly laid flat, viewed from directly above, on a soft neutral light background, even lighting, exact color and print. No person, no text.'
+  };
+  let prodUrl = null, prodBusy = false;
+  async function callGemini(parts) {
+    let res;
+    try {
+      res = await fetch(`${ENDPOINT}?key=${encodeURIComponent(getKey())}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contents: [{ parts }], generationConfig: { responseModalities: ['IMAGE'] } }) });
+    } catch { throw new Error('Couldn\'t reach Google. Check your internet connection and try again.'); }
+    let data = null; try { data = await res.json(); } catch {}
+    if (!res.ok) throw new Error(apiErrorMessage(res.status, data));
+    return extractGeneratedImage(data);
+  }
+  async function generateProduct() {
+    if (prodBusy || planLocked()) return;
+    if (!files.product) { showError('Upload a garment photo first.', 'warn'); return; }
+    if (!getKey()) { showError('Product images use Gemini. Add a billing-enabled Gemini API key in Settings, and set Image engine as you like.', 'warn'); return; }
+    hideError(); prodBusy = true; $('prodBtn').disabled = true; $('prodStatus').textContent = 'Creating your product image… this may take a little time.';
+    try {
+      let b64;
+      try { b64 = await compressImage(files.product, 1024); } catch { throw new Error('That image couldn\'t be read. Try a JPG or PNG.'); }
+      const { base64, mime } = await callGemini([{ text: STYLES[$('prodStyle').value] }, { inlineData: { mimeType: 'image/jpeg', data: b64 } }]);
+      if (prodUrl) URL.revokeObjectURL(prodUrl);
+      prodUrl = URL.createObjectURL(base64ToBlob(base64, mime)); prodMime = mime;
+      $('prodImg').src = prodUrl; $('prodResult').classList.remove('hidden');
+    } catch (err) { showError(err && err.message ? err.message : 'Something unexpected happened. Please try again.'); }
+    finally { prodBusy = false; $('prodBtn').disabled = false; $('prodStatus').textContent = ''; }
+  }
+  let prodMime = 'image/png';
+  function downloadProduct() {
+    if (!prodUrl) return;
+    const a = document.createElement('a'); a.href = prodUrl; a.download = `easy-trial-product.${prodMime.includes('jpeg') ? 'jpg' : prodMime.includes('webp') ? 'webp' : 'png'}`;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+
+  function initExtras() {
+    document.querySelectorAll('.tabbtn').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+    showTab('tryon'); loadShop();
+    $('saveShop').addEventListener('click', saveShop);
+    addItemRow();
+    $('addItem').addEventListener('click', addItemRow);
+    $('items').addEventListener('input', updateTotal);
+    $('items').addEventListener('click', (e) => { if (e.target.classList.contains('it-del')) { e.target.parentElement.remove(); if (!$('items').children.length) addItemRow(); updateTotal(); } });
+    $('bPhone').addEventListener('change', () => { const c = readJ(LS.cust, {})[normPhone($('bPhone').value)]; if (c && !$('bName').value.trim()) $('bName').value = c.name; });
+    $('billBtn').addEventListener('click', generateBill);
+    $('custSearch').addEventListener('input', renderCustomers);
+    $('custList').addEventListener('click', onCustomerClick);
+    $('prodBtn').addEventListener('click', generateProduct);
+    $('prodDl').addEventListener('click', downloadProduct);
+    $('bDisc').addEventListener('input', updateTotal); $('bGst').addEventListener('change', updateTotal);
+    $('mktBtn').addEventListener('click', sendMarketing);
+    $('setCodeBtn').addEventListener('click', () => applyCode($('setCode').value, $('setCodeMsg')));
+    $('planCodeBtn').addEventListener('click', () => applyCode($('planCode').value, $('planCodeMsg')));
+    renderCustomers();
+    planLocked(); setInterval(planLocked, 30000);
+    const left = Math.ceil((getPlan().exp - Date.now()) / 864e5);
+    if (left > 0 && left <= 7) showError(`Your plan ends in ${left} day${left === 1 ? '' : 's'}. Contact +91 98836 48195 to renew.`, 'warn');
+  }
+
+  // ================= Plan (6-month timer + recharge codes) =================
+  // NOTE: this runs in the browser, so it is a soft lock. A technical user can bypass it.
+  const PLAN_KEY = 'easy_trial_plan';
+  const addMonths = (t, n) => { const d = new Date(t); d.setMonth(d.getMonth() + n); return d.getTime(); };
+  function getPlan() {
+    let p = readJ(PLAN_KEY, null);
+    if (!p || !p.exp) { p = { exp: addMonths(Date.now(), 6), seen: Date.now() }; writeJ(PLAN_KEY, p); }
+    return p;
+  }
+  /** Returns true when the plan has ended. Uses the latest time seen, so setting the clock back doesn't help. */
+  function planLocked() {
+    const p = getPlan(), now = Math.max(Date.now(), p.seen || 0);
+    if (now > (p.seen || 0)) { p.seen = now; writeJ(PLAN_KEY, p); }
+    const locked = now >= p.exp;
+    $('planModal').classList.toggle('hidden', !locked); $('planModal').classList.toggle('flex', locked);
+    document.querySelector('main').inert = locked; document.querySelector('header').inert = locked;
+    if (locked) $('drawer').classList.remove('open'), $('overlay').classList.remove('open');
+    $('planStatus').textContent = locked ? 'Plan ended.' : `Active until ${fmtDate(p.exp)} (${Math.ceil((p.exp - now) / 864e5)} days left).`;
+    return locked;
+  }
+  function applyCode(raw, msgEl) {
+    const m = /^(\d{1,2})MTHET$/i.exec(String(raw).trim());
+    if (!m || +m[1] < 1) { msgEl.className = 'mt-1 text-sm text-red-700'; msgEl.textContent = 'That code isn\'t valid. Check it and try again.'; return; }
+    const p = getPlan(), now = Math.max(Date.now(), p.seen || 0);
+    p.exp = addMonths(Math.max(p.exp, now), +m[1]); p.seen = now; writeJ(PLAN_KEY, p);
+    planLocked();
+    msgEl.className = 'mt-1 text-sm text-emerald-700'; msgEl.textContent = `Recharged: ${m[1]} month${+m[1] === 1 ? '' : 's'} added.`;
+    $('setCode').value = ''; $('planCode').value = '';
+  }
+
+  // ================= Marketing request (PDF) =================
+  const MKT_NO = '918514012448';
+  const wrapText = (t, w = 88) => String(t).split('\n').flatMap((par) => {
+    const out = []; let line = '';
+    for (const word of par.split(' ')) { if ((line + ' ' + word).trim().length > w) { out.push(line); line = word; } else line = (line + ' ' + word).trim(); }
+    out.push(line); return out;
+  });
+  /** Minimal dependency-free PDF writer (text only, A4, Helvetica). */
+  function makePdf(lines) {
+    const per = 52, pages = [];
+    for (let i = 0; i < lines.length; i += per) pages.push(lines.slice(i, i + per));
+    if (!pages.length) pages.push(['']);
+    const clean = (t) => String(t).replace(/[^\x20-\x7E]/g, '?').replace(/([\\()])/g, '\\$1');
+    let out = '%PDF-1.4\n'; const off = [];
+    const add = (n, body) => { off[n] = out.length; out += `${n} 0 obj\n${body}\nendobj\n`; };
+    add(1, '<< /Type /Catalog /Pages 2 0 R >>');
+    add(2, `<< /Type /Pages /Kids [${pages.map((_, k) => `${5 + 2 * k} 0 R`).join(' ')}] /Count ${pages.length} >>`);
+    add(3, '<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>');
+    pages.forEach((ls, k) => {
+      const st = `BT /F1 10 Tf 14 TL 40 800 Td ${ls.map((l) => `(${clean(l)}) Tj T*`).join(' ')} ET`;
+      add(4 + 2 * k, `<< /Length ${st.length} >>\nstream\n${st}\nendstream`);
+      add(5 + 2 * k, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents ${4 + 2 * k} 0 R >>`);
+    });
+    const n = 4 + 2 * pages.length, xref = out.length;
+    out += `xref\n0 ${n}\n0000000000 65535 f \n${off.slice(1).map((o) => `${String(o).padStart(10, '0')} 00000 n \n`).join('')}trailer\n<< /Size ${n} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF`;
+    return new Blob([out], { type: 'application/pdf' });
+  }
+  function sendMarketing() {
+    if (planLocked()) return;
+    const shop = getShop(), text = $('mktText').value.trim();
+    const cust = Object.values(readJ(LS.cust, {})), bills = readJ(LS.bills, []);
+    if (!shop.name) { showError('Add your shop name in Settings first.', 'warn'); openDrawer(); return; }
+    if (!text) { showError('Write the message you want to send to your customers.', 'warn'); return; }
+    if (!cust.length) { showError('You have no saved customers yet. They are saved when you create bills.', 'warn'); return; }
+    if (!confirm(`This creates a PDF with the name, phone number and purchase history of ${cust.length} customer(s), and opens WhatsApp to send it to the marketing team (+91 85140 12448). Continue?`)) return;
+    hideError();
+    const money = (n) => `Rs.${n.toFixed(2)}`, L = ['EASY TRIAL - MARKETING REQUEST', `Shop: ${shop.name}`, shop.phone ? `Shop phone: ${shop.phone}` : '', `Date: ${fmtDate(new Date().toISOString())}`, '', 'MESSAGE TO SEND:', ...wrapText(text), '', `CUSTOMERS (${cust.length})`, '------------------------------'];
+    cust.forEach((c, i) => {
+      const mine = bills.filter((b) => b.phone === c.phone);
+      L.push(`${i + 1}. ${c.name} | +${c.phone}`, `   Bills: ${mine.length} | Spent: ${money(mine.reduce((t, b) => t + b.total, 0))} | Last: ${mine.length ? fmtDate(mine[mine.length - 1].date) : '-'}`,
+        ...wrapText('Bought: ' + (mine.flatMap((b) => b.items.map((x) => `${x.name} x${x.qty}`)).join(', ') || '-'), 84).map((l) => '   ' + l));
+    });
+    const url = URL.createObjectURL(makePdf(L));
+    const a = document.createElement('a'); a.href = url; a.download = `marketing-request-${new Date().toISOString().slice(0, 10)}.pdf`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+    const msg = `Hello, please run this marketing campaign for ${shop.name}. The customer PDF is attached (${cust.length} customers).\n\nMessage:\n${text.slice(0, 700)}`;
+    const w = window.open(`https://wa.me/${MKT_NO}?text=${encodeURIComponent(msg)}`, '_blank'); if (w) w.opener = null;
+    $('mktStatus').textContent = 'The PDF was downloaded. In the WhatsApp chat, tap the attach (📎) button, choose that PDF, and press Send.';
+  }
+
   // ---------- Init ----------
-  buildCards();
+  buildCards(SLOTS, 'uploads'); buildCards([PSLOT], 'productUpload');
   loadSavedApiKey();
   $('openSettings').addEventListener('click', openDrawer);
   $('closeSettings').addEventListener('click', closeDrawer);
@@ -535,6 +968,7 @@
   window.addEventListener('appinstalled', () => { installEvt = null; $('installBtn').classList.add('hidden'); });
   $('installBtn').addEventListener('click', async () => { if (!installEvt) return; installEvt.prompt(); await installEvt.userChoice; installEvt = null; $('installBtn').classList.add('hidden'); });
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
+  initExtras();
   $('generateBtn').addEventListener('click', generateVirtualTryOn);
   $('downloadBtn').addEventListener('click', downloadGeneratedImage);
   $('againBtn').addEventListener('click', () => { resetResult(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
