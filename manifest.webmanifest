@@ -1,7 +1,7 @@
 {
-  "name": "Easy Trial",
-  "short_name": "Easy Trial",
-  "description": "See the fit before the fitting.",
+  "name": "EasyBiz",
+  "short_name": "EasyBiz",
+  "description": "Billing, marketing and virtual try-on for your shop.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
