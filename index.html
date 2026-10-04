@@ -7,8 +7,8 @@
 <meta name="theme-color" content="#5B47D6">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>Easy Trial – See the fit before the fitting</title>
-<meta name="description" content="AI virtual clothing try-on for small clothing shops.">
+<title>EasyBiz – Billing, marketing &amp; virtual try-on</title>
+<meta name="description" content="Billing, marketing and AI virtual try-on for small clothing shops.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -42,8 +42,8 @@
 <header class="fixed top-0 inset-x-0 z-30 bg-paper/90 backdrop-blur border-b border-black/5">
   <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
     <div class="flex items-baseline gap-3">
-      <span class="font-display text-2xl font-bold tracking-tight">Easy<span class="text-accent"> Trial</span></span>
-      <span class="hidden sm:inline text-sm text-ink/60">See the fit before the fitting.</span>
+      <span class="font-display text-2xl font-bold tracking-tight">Easy<span class="text-accent">Biz</span></span>
+      <span class="hidden sm:inline text-sm text-ink/60">Billing &amp; virtual try-on for your shop.</span>
     </div>
     <div class="flex items-center">
     <button id="installBtn" class="hidden mr-2 rounded-full bg-accent-soft px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/20">Install app</button>
@@ -58,15 +58,15 @@
 <!-- Main -->
 <main class="max-w-6xl mx-auto px-4 pt-24 pb-16">
   <nav class="flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Sections">
-    <button data-tab="tryon" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Try-On</button>
-    <button data-tab="product" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Product Images</button>
     <button data-tab="billing" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Billing</button>
     <button data-tab="customers" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Customers</button>
     <button data-tab="marketing" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Marketing</button>
+    <button data-tab="tryon" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Try-On</button>
+    <button data-tab="product" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Product Images</button>
   </nav>
   <div id="alert" role="alert" aria-live="assertive" class="mt-6 hidden"></div>
 
-  <div id="tab-tryon" data-panel class="mt-8">
+  <div id="tab-tryon" data-panel class="mt-8 hidden">
   <section class="max-w-2xl">
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Your virtual fitting room</h1>
     <p class="mt-3 text-base sm:text-lg text-ink/70">Upload your garment and a customer photo to create a realistic virtual try-on.</p>
@@ -132,7 +132,7 @@
   </div>
 
   <!-- Billing -->
-  <div id="tab-billing" data-panel class="mt-8 hidden">
+  <div id="tab-billing" data-panel class="mt-8">
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Billing</h1>
     <p class="mt-3 max-w-2xl text-ink/70">Create a bill and send it to your customer on WhatsApp. Customers and purchases are saved on this device.</p>
     <div class="mt-6 grid gap-5 lg:grid-cols-2">
@@ -150,6 +150,7 @@
           <div><label for="bGst" class="text-xs font-semibold">GST %</label><select id="bGst" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option value="0">None</option><option>5</option><option>12</option><option>18</option><option>28</option></select></div>
           <div><label for="bPay" class="text-xs font-semibold">Payment</label><select id="bPay" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option>Cash</option><option>UPI</option><option>Card</option><option>Credit</option></select></div>
         </div>
+        <div id="upiBox" class="mt-4 hidden rounded-2xl bg-paper p-4" aria-live="polite"></div>
         <p class="mt-4 flex justify-between text-lg font-bold"><span>Total</span><span id="billTotal">0.00</span></p>
         <button id="billBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark active:scale-[.98]">Generate Bill &amp; Open WhatsApp</button>
         <p class="mt-2 text-xs text-ink/60">WhatsApp opens with the bill ready to send. You tap Send there.</p>
@@ -167,7 +168,7 @@
   </div>
   <div id="tab-marketing" data-panel class="mt-8 hidden">
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Marketing</h1>
-    <p class="mt-3 max-w-2xl text-ink/70">Write your offer or message. Easy Trial makes a PDF with your message and all customer details, then opens WhatsApp to our marketing team, who take it from there.</p>
+    <p class="mt-3 max-w-2xl text-ink/70">Write your offer or message. EasyBiz makes a PDF with your message and all customer details, then opens WhatsApp to our marketing team, who take it from there.</p>
     <div class="mt-5 max-w-2xl rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/5">
       <label for="mktText" class="block text-sm font-semibold">Message for your customers</label>
       <textarea id="mktText" rows="5" maxlength="1000" placeholder="e.g. Festive sale: flat 20% off on all shirts this week!" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></textarea>
@@ -183,10 +184,10 @@
 <div id="planModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-ink/80 p-4" role="alertdialog" aria-modal="true" aria-labelledby="planTitle">
   <div class="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl">
     <h2 id="planTitle" class="font-display text-2xl font-bold">Your plan has ended</h2>
-    <p class="mt-2 text-ink/70">To keep using Easy Trial, please contact us to renew: <b>+91 98836 48195</b></p>
+    <p class="mt-2 text-ink/70">To keep using EasyBiz, please contact us to renew: <b>+91 98836 48195</b></p>
     <div class="mt-4 grid grid-cols-2 gap-3">
       <a href="tel:+919883648195" class="rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Call</a>
-      <a href="https://wa.me/919883648195?text=Hello%2C%20I%20want%20to%20renew%20my%20Easy%20Trial%20plan." target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700">WhatsApp</a>
+      <a href="https://wa.me/919883648195?text=Hello%2C%20I%20want%20to%20renew%20my%20EasyBiz%20plan." target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700">WhatsApp</a>
     </div>
     <label for="planCode" class="mt-5 block text-left text-sm font-semibold">Have a recharge code?</label>
     <div class="mt-1 flex gap-2"><input id="planCode" autocomplete="off" autocapitalize="characters" placeholder="Enter code" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"><button id="planCodeBtn" type="button" class="rounded-xl border border-ink/20 px-4 font-semibold hover:bg-black/5">Activate</button></div>
@@ -203,7 +204,7 @@
       <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
   </div>
-  <p class="mt-3 text-sm text-ink/70">Easy Trial uses a Google Gemini API key to generate try-on images. You can create one in Google AI Studio.</p>
+  <p class="mt-3 text-sm text-ink/70">EasyBiz uses a Google Gemini API key to generate try-on images. You can create one in Google AI Studio.</p>
 
   <div class="mt-5 rounded-2xl bg-paper p-4">
     <p class="text-sm font-semibold">Shop details (printed on bills)</p>
@@ -225,6 +226,8 @@
       <input id="shopGstin" maxlength="15" autocapitalize="characters" placeholder="22AAAAA0000A1Z5" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
       <label for="shopPan" class="mt-3 block text-sm">PAN</label>
       <input id="shopPan" maxlength="10" autocapitalize="characters" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
+      <label for="shopPayee" class="mt-3 block text-sm">UPI payee name (shown in the payer's UPI app)</label>
+      <input id="shopPayee" placeholder="Same as shop name if empty" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
       <label for="shopUpi" class="mt-3 block text-sm">UPI ID</label>
       <input id="shopUpi" placeholder="shop@upi" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent">
       <label for="shopTerms" class="mt-3 block text-sm">Terms &amp; conditions</label>
@@ -270,11 +273,14 @@
 
   <div class="mt-8 rounded-2xl bg-accent-soft p-4 text-sm leading-relaxed text-ink/80">
     <p class="font-semibold">Privacy note</p>
-    <p class="mt-1">Your key is stored only in this browser (localStorage), and your photos are sent directly from your browser to Google's Gemini API. Easy Trial has no server.</p>
+    <p class="mt-1">Your key is stored only in this browser (localStorage), and your photos are sent directly from your browser to Google's Gemini API. EasyBiz has no server.</p>
     <p class="mt-2">A key kept in browser storage is not protected like a server-side secret and can be read by anyone using this browser. Use a personal key with usage limits, and don't share this app with a key you want to keep private.</p>
   </div>
 </aside>
 
+<script>/* qrcode-generator 1.4.4 (MIT), Kazuhiko Arase */
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(n*r,o*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("友");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});
+</script>
 <script>
 (() => {
   'use strict';
@@ -630,7 +636,7 @@
     if (!resultUrl) return;
     const ext = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/png': 'png' }[resultMime] || 'png';
     const a = document.createElement('a');
-    a.href = resultUrl; a.download = `easy-trial-virtual-try-on.${ext}`;
+    a.href = resultUrl; a.download = `easybiz-virtual-try-on.${ext}`;
     document.body.appendChild(a); a.click(); a.remove();
   }
   function resetResult() {
@@ -658,8 +664,8 @@
   const LS = { shop: 'easy_trial_shop', cust: 'easy_trial_customers', bills: 'easy_trial_bills' };
   const readJ = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch { return d; } };
   const writeJ = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
-  const SHOP_F = { address: 'shopAddr', phone: 'shopPhone', email: 'shopEmail', gstin: 'shopGstin', pan: 'shopPan', upi: 'shopUpi', terms: 'shopTerms' };
-  const getShop = () => ({ name: '', cc: '91', cur: '₹', address: '', phone: '', email: '', gstin: '', pan: '', upi: '', terms: '', ...readJ(LS.shop, {}) });
+  const SHOP_F = { address: 'shopAddr', payee: 'shopPayee', phone: 'shopPhone', email: 'shopEmail', gstin: 'shopGstin', pan: 'shopPan', upi: 'shopUpi', terms: 'shopTerms' };
+  const getShop = () => ({ name: '', cc: '91', cur: '₹', address: '', payee: '', phone: '', email: '', gstin: '', pan: '', upi: '', terms: '', ...readJ(LS.shop, {}) });
   const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fm = (cur, n) => `${cur}${Number(n).toFixed(2)}`;
   const fmtDate = (iso) => new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -671,7 +677,7 @@
     sh.gstin = sh.gstin.toUpperCase(); sh.pan = sh.pan.toUpperCase();
     if (sh.gstin && !/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z\d]Z[A-Z\d]$/.test(sh.gstin)) { $('shopMsg').textContent = 'That GSTIN doesn\'t look valid (15 characters). Please check it.'; return; }
     if (!writeJ(LS.shop, sh)) { $('shopMsg').textContent = 'Couldn\'t save (browser storage is blocked).'; return; }
-    $('shopMsg').textContent = ''; $('shopCc').value = cc; $('shopGstin').value = sh.gstin; $('shopPan').value = sh.pan; closeDrawer();
+    $('shopMsg').textContent = ''; $('shopCc').value = cc; $('shopGstin').value = sh.gstin; $('shopPan').value = sh.pan; renderUpiBox(); closeDrawer();
   }
   function loadShop() {
     const sh = getShop(); $('shopName').value = sh.name; $('shopCc').value = sh.cc; $('shopCur').value = sh.cur;
@@ -702,7 +708,7 @@
     const rate = parseFloat($('bGst').value) || 0, gst = (sub - disc) * rate / 100;
     return { sub, disc, rate, cgst: gst / 2, sgst: gst / 2, total: sub - disc + gst };
   }
-  function updateTotal() { $('billTotal').textContent = fm(getShop().cur, calc(readItems()).total); }
+  function updateTotal() { $('billTotal').textContent = fm(getShop().cur, calc(readItems()).total); renderUpiBox(); }
   function normPhone(raw) {
     let d = String(raw).replace(/\D/g, '').replace(/^0+/, '');
     if (d.length <= 10) d = getShop().cc + d; // add country code to local numbers
@@ -732,6 +738,7 @@
   }
   function renderBill(b) {
     const i = b.info || {}, c = b.cur, sub = b.sub ?? b.total;
+    const qr = b.pay === 'UPI' && i.upi && b.total > 0 ? qrDataUrl(upiLink(i, b.shop, b.total, invNo(b))) : '';
     const row = (l, v, cls = '') => `<p class="flex justify-between py-0.5 ${cls}"><span>${l}</span><span>${v}</span></p>`;
     const el = $('billOut');
     el.innerHTML = `<p class="text-center text-xs font-bold tracking-widest text-ink/60">${i.gstin ? 'TAX INVOICE' : 'CASH MEMO'}</p>
@@ -742,6 +749,7 @@
       <ul class="mt-2 divide-y divide-black/5 text-sm">${b.items.map((x) => `<li class="py-2"><div class="font-medium">${esc(x.name)}</div><div class="flex justify-between text-ink/70"><span>${x.qty} × ${fm(c, x.price)}</span><span>${fm(c, x.qty * x.price)}</span></div></li>`).join('')}</ul>
       <div class="mt-2 border-t border-ink/20 pt-2 text-sm">${row('Subtotal', fm(c, sub))}${b.disc > 0 ? row('Discount', '-' + fm(c, b.disc)) : ''}${b.rate > 0 ? row(`CGST @ ${b.rate / 2}%`, fm(c, b.cgst)) + row(`SGST @ ${b.rate / 2}%`, fm(c, b.sgst)) : ''}${row('Grand Total', fm(c, b.total), 'text-lg font-bold')}</div>
       <p class="mt-2 text-sm text-ink/70">${b.pay ? `Payment: ${esc(b.pay)}` : ''}${i.upi ? ` · UPI: ${esc(i.upi)}` : ''}</p>
+      ${qr ? `<div class="mt-3 text-center"><img src="${qr}" alt="UPI payment QR code" class="mx-auto h-44 w-44" style="image-rendering:pixelated"><p class="text-sm">Scan to pay <b>${fm(c, b.total)}</b> to <b>${esc(i.payee || b.shop)}</b></p></div>` : ''}
       ${i.terms ? `<p class="mt-2 text-xs text-ink/60">Terms: ${esc(i.terms)}</p>` : ''}
       <p class="mt-4 text-center text-sm font-medium">Thank you for shopping with ${esc(b.shop)}! 🙏<br><span class="font-normal text-ink/60">We truly appreciate your visit and hope to see you again soon.</span></p>
       <div class="no-print mt-4 flex flex-col gap-2 sm:flex-row">
@@ -761,7 +769,7 @@
     if (!items.length) { showError('Add at least one item with a name and a price.', 'warn'); return; }
     hideError();
     const bills = readJ(LS.bills, []), cust = readJ(LS.cust, {});
-    const info = { address: shop.address, phone: shop.phone, email: shop.email, gstin: shop.gstin, pan: shop.pan, upi: shop.upi, terms: shop.terms };
+    const info = { payee: shop.payee, address: shop.address, phone: shop.phone, email: shop.email, gstin: shop.gstin, pan: shop.pan, upi: shop.upi, terms: shop.terms };
     const bill = { no: bills.reduce((m, x) => Math.max(m, x.no), 0) + 1, date: new Date().toISOString(), shop: shop.name, cur: shop.cur, info, name, phone, items, ...calc(items), pay: $('bPay').value };
     bills.push(bill);
     cust[phone] = { name, phone, first: (cust[phone] && cust[phone].first) || bill.date };
@@ -831,13 +839,13 @@
   let prodMime = 'image/png';
   function downloadProduct() {
     if (!prodUrl) return;
-    const a = document.createElement('a'); a.href = prodUrl; a.download = `easy-trial-product.${prodMime.includes('jpeg') ? 'jpg' : prodMime.includes('webp') ? 'webp' : 'png'}`;
+    const a = document.createElement('a'); a.href = prodUrl; a.download = `easybiz-product.${prodMime.includes('jpeg') ? 'jpg' : prodMime.includes('webp') ? 'webp' : 'png'}`;
     document.body.appendChild(a); a.click(); a.remove();
   }
 
   function initExtras() {
     document.querySelectorAll('.tabbtn').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
-    showTab('tryon'); loadShop();
+    showTab('billing'); loadShop();
     $('saveShop').addEventListener('click', saveShop);
     addItemRow();
     $('addItem').addEventListener('click', addItemRow);
@@ -849,6 +857,7 @@
     $('custList').addEventListener('click', onCustomerClick);
     $('prodBtn').addEventListener('click', generateProduct);
     $('prodDl').addEventListener('click', downloadProduct);
+    $('bPay').addEventListener('change', renderUpiBox);
     $('bDisc').addEventListener('input', updateTotal); $('bGst').addEventListener('change', updateTotal);
     $('mktBtn').addEventListener('click', sendMarketing);
     $('setCodeBtn').addEventListener('click', () => applyCode($('setCode').value, $('setCodeMsg')));
@@ -857,6 +866,22 @@
     planLocked(); setInterval(planLocked, 30000);
     const left = Math.ceil((getPlan().exp - Date.now()) / 864e5);
     if (left > 0 && left <= 7) showError(`Your plan ends in ${left} day${left === 1 ? '' : 's'}. Contact +91 98836 48195 to renew.`, 'warn');
+  }
+
+  // ================= UPI payment QR =================
+  /** Standard UPI deep link; any UPI app can scan it. Amount comes from the bill total. */
+  const upiLink = (i, shopName, amount, note) => `upi://pay?pa=${i.upi}&pn=${encodeURIComponent(i.payee || shopName)}&am=${Number(amount).toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
+  function qrDataUrl(text) {
+    try { const q = qrcode(0, 'M'); q.addData(text); q.make(); return q.createDataURL(8, 3); } catch { return ''; }
+  }
+  function renderUpiBox() {
+    const box = $('upiBox'), on = $('bPay').value === 'UPI';
+    box.classList.toggle('hidden', !on); if (!on) return;
+    const sh = getShop(), total = calc(readItems()).total;
+    if (!sh.upi) { box.innerHTML = '<p class="text-sm text-amber-800">Add your UPI ID (and payee name) in Settings to show a payment QR.</p>'; return; }
+    if (total <= 0) { box.innerHTML = '<p class="text-sm text-ink/60">Add items to show the payment QR.</p>'; return; }
+    const img = qrDataUrl(upiLink(sh, sh.name, total, 'Bill payment'));
+    box.innerHTML = img ? `<img src="${img}" alt="UPI payment QR code" class="mx-auto h-44 w-44" style="image-rendering:pixelated"><p class="mt-2 text-center text-sm">Scan to pay <b>${fm(sh.cur, total)}</b> to <b>${esc(sh.payee || sh.name || sh.upi)}</b></p><p class="text-center text-xs text-ink/50">${esc(sh.upi)}</p>` : '<p class="text-sm text-red-700">Couldn\'t create the QR code.</p>';
   }
 
   // ================= Plan (6-month timer + recharge codes) =================
@@ -925,7 +950,7 @@
     if (!cust.length) { showError('You have no saved customers yet. They are saved when you create bills.', 'warn'); return; }
     if (!confirm(`This creates a PDF with the name, phone number and purchase history of ${cust.length} customer(s), and opens WhatsApp to send it to the marketing team (+91 85140 12448). Continue?`)) return;
     hideError();
-    const money = (n) => `Rs.${n.toFixed(2)}`, L = ['EASY TRIAL - MARKETING REQUEST', `Shop: ${shop.name}`, shop.phone ? `Shop phone: ${shop.phone}` : '', `Date: ${fmtDate(new Date().toISOString())}`, '', 'MESSAGE TO SEND:', ...wrapText(text), '', `CUSTOMERS (${cust.length})`, '------------------------------'];
+    const money = (n) => `Rs.${n.toFixed(2)}`, L = ['EASYBIZ - MARKETING REQUEST', `Shop: ${shop.name}`, shop.phone ? `Shop phone: ${shop.phone}` : '', `Date: ${fmtDate(new Date().toISOString())}`, '', 'MESSAGE TO SEND:', ...wrapText(text), '', `CUSTOMERS (${cust.length})`, '------------------------------'];
     cust.forEach((c, i) => {
       const mine = bills.filter((b) => b.phone === c.phone);
       L.push(`${i + 1}. ${c.name} | +${c.phone}`, `   Bills: ${mine.length} | Spent: ${money(mine.reduce((t, b) => t + b.total, 0))} | Last: ${mine.length ? fmtDate(mine[mine.length - 1].date) : '-'}`,
