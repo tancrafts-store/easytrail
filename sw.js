@@ -1,5 +1,5 @@
-// Easy Trial service worker: caches the app shell; API calls always go to the network.
-const CACHE = 'easy-trial-v1';
+// EasyBiz service worker: caches the app shell; API calls always go to the network.
+const CACHE = 'easybiz-v2';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', (e) => { e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL))); self.skipWaiting(); });
 self.addEventListener('activate', (e) => { e.waitUntil(caches.keys().then((k) => Promise.all(k.filter((n) => n !== CACHE).map((n) => caches.delete(n)))).then(() => self.clients.claim())); });
