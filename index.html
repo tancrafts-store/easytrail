@@ -37,16 +37,19 @@
 </style>
 </head>
 <body class="font-sans antialiased min-h-screen overflow-x-hidden">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol><symbol id="i-bill" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol><symbol id="i-mega" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></symbol><symbol id="i-shirt" viewBox="0 0 24 24"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol></svg>
+
 
 <!-- Fixed header -->
 <header class="fixed top-0 inset-x-0 z-30 bg-paper/90 backdrop-blur border-b border-black/5">
   <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
-    <div class="flex items-baseline gap-3">
-      <span class="font-display text-2xl font-bold tracking-tight">Easy<span class="text-accent">Biz</span></span>
-      <span class="hidden sm:inline text-sm text-ink/60">Billing &amp; virtual try-on for your shop.</span>
-    </div>
+    <button id="logoBtn" data-go="home" class="flex items-center gap-3 rounded-lg" aria-label="EasyBiz home">
+      <img id="logoImg" src="easybiz.png" alt="EasyBiz" class="h-10 w-auto max-w-[7.5rem] object-contain sm:max-w-[11rem]" onerror="this.remove();document.getElementById('logoText').classList.remove('hidden')">
+      <span id="logoText" class="hidden font-display text-2xl font-bold tracking-tight">Easy<span class="text-accent">Biz</span></span>
+    </button>
     <div class="flex items-center">
-    <button id="helpBtn" class="mr-2 flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold hover:bg-black/5" aria-haspopup="dialog"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg>Help</button>
+    <button id="planChip" class="mr-2 rounded-full bg-accent-soft px-3 py-2 text-sm font-semibold text-accent" aria-haspopup="dialog" aria-label="Plan & recharge"><span id="planChipText">…</span></button>
+    <button id="helpBtn" aria-label="Help" class="mr-2 flex h-11 items-center gap-1.5 rounded-full px-3 text-sm font-semibold hover:bg-black/5" aria-haspopup="dialog"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7M12 17h.01"/></svg><span class="hidden sm:inline">Help</span></button>
     <button id="installBtn" class="hidden mr-2 rounded-full bg-accent-soft px-4 py-2 text-sm font-semibold text-accent hover:bg-accent/20">Install app</button>
     <button id="openSettings" class="relative h-11 w-11 grid place-items-center rounded-full hover:bg-black/5 transition" aria-label="Open settings" aria-haspopup="dialog">
       <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
@@ -58,17 +61,57 @@
 
 <!-- Main -->
 <main class="max-w-6xl mx-auto px-4 pt-24 pb-16">
-  <nav class="flex gap-2 overflow-x-auto pb-1" role="tablist" aria-label="Sections">
-    <button data-tab="billing" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Billing</button>
-    <button data-tab="dues" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Pay Later</button>
-    <button data-tab="customers" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Customers</button>
-    <button data-tab="marketing" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Marketing</button>
-    <button data-tab="tryon" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Try-On</button>
-    <button data-tab="product" role="tab" class="tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold">Product Images</button>
-  </nav>
+  
   <div id="alert" role="alert" aria-live="assertive" class="mt-6 hidden"></div>
 
-  <div id="tab-tryon" data-panel class="mt-8 hidden">
+  <div id="tab-home" data-panel class="mt-4">
+    <section class="rounded-3xl bg-gradient-to-br from-accent to-indigo-500 p-6 text-white shadow-lg shadow-accent/20 sm:p-8">
+      <p class="text-sm font-medium text-white/80">Welcome back</p>
+      <h1 id="welcome" class="mt-1 font-display text-3xl font-bold sm:text-5xl">Hello!</h1>
+      <p id="welcomeSub" class="mt-2 text-white/90">What would you like to do today?</p>
+      <div class="mt-4 flex gap-2" role="group" aria-label="Language">
+        <button data-lang="en" class="langbtn rounded-full px-3 py-1.5 text-sm font-semibold">English</button>
+        <button data-lang="hi" class="langbtn rounded-full px-3 py-1.5 text-sm font-semibold">हिन्दी</button>
+        <button data-lang="bn" class="langbtn rounded-full px-3 py-1.5 text-sm font-semibold">বাংলা</button>
+      </div>
+      <button id="welcomeAdd" class="mt-3 hidden rounded-xl bg-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/30">Add shop name</button>
+    </section>
+    <div class="mt-5 grid grid-cols-3 gap-3" aria-label="Today at a glance">
+      <div class="rounded-2xl bg-white p-3 ring-1 ring-black/5"><p class="text-xs text-ink/60">Today's bills</p><p id="stBills" class="text-xl font-bold">0</p></div>
+      <div class="rounded-2xl bg-white p-3 ring-1 ring-black/5"><p class="text-xs text-ink/60">Today's sales</p><p id="stSales" class="text-xl font-bold">0</p></div>
+      <div class="rounded-2xl bg-amber-50 p-3 ring-1 ring-amber-200"><p class="text-xs text-amber-800">Pay Later dues</p><p id="stDue" class="text-xl font-bold text-amber-900">0</p></div>
+    </div>
+    <h2 class="mt-8 font-display text-xl font-bold">What do you want to do?</h2>
+    <div class="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3">
+      <button data-go="billing" class="relative flex flex-col items-start gap-3 rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98]">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-violet-100 text-violet-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-bill"/></svg></span>
+        <span><span class="block font-display text-lg font-bold">Billing</span><span class="block text-sm text-ink/60">Create bills and send them on WhatsApp</span></span>
+      </button>
+      <button data-go="tryon" class="relative flex flex-col items-start gap-3 rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98]">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-teal-100 text-teal-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-shirt"/></svg></span>
+        <span><span class="block font-display text-lg font-bold">Virtual Try-On</span><span class="block text-sm text-ink/60">Show how clothes may look on a customer</span></span>
+      </button>
+      <button data-go="customers" class="relative flex flex-col items-start gap-3 rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98]">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-sky-100 text-sky-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-users"/></svg></span>
+        <span><span class="block font-display text-lg font-bold">Customers</span><span class="block text-sm text-ink/60">Everyone you have billed, with purchases</span></span>
+      </button>
+      <button data-go="dues" class="relative flex flex-col items-start gap-3 rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98]">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-amber-100 text-amber-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-clock"/></svg></span>
+        <span><span class="block font-display text-lg font-bold">Pay Later</span><span class="block text-sm text-ink/60">Track dues and send reminders</span></span><span id="dueBadge" class="absolute right-4 top-4 hidden min-w-[1.5rem] rounded-full bg-red-600 px-2 py-0.5 text-center text-xs font-bold text-white" aria-label="pending payments">0</span>
+      </button>
+      <button data-go="marketing" class="relative flex flex-col items-start gap-3 rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98]">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-rose-100 text-rose-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-mega"/></svg></span>
+        <span><span class="block font-display text-lg font-bold">Marketing</span><span class="block text-sm text-ink/60">Send offers to your customers</span></span>
+      </button>
+      <button data-go="product" class="relative flex flex-col items-start gap-3 rounded-3xl bg-white p-5 text-left shadow-sm ring-1 ring-black/5 transition hover:-translate-y-0.5 hover:shadow-lg active:scale-[.98]">
+        <span class="grid h-12 w-12 place-items-center rounded-2xl bg-orange-100 text-orange-700"><svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-image"/></svg></span>
+        <span><span class="block font-display text-lg font-bold">Product Photos</span><span class="block text-sm text-ink/60">Make clean photos of your garments</span></span>
+      </button>
+    </div>
+  </div>
+
+  <div id="tab-tryon" data-panel class="mt-4 hidden">
+    <button data-go="home" class="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-ink/70 hover:bg-black/5"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-back"/></svg>Home</button>
   <section class="max-w-2xl">
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Your virtual fitting room</h1>
     <p class="mt-3 text-base sm:text-lg text-ink/70">Upload your garment and a customer photo to create a realistic virtual try-on.</p>
@@ -109,17 +152,19 @@
   </div>
 
   <!-- Product images -->
-  <div id="tab-product" data-panel class="mt-8 hidden">
-    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Product images</h1>
-    <p class="mt-3 max-w-2xl text-ink/70">Turn a garment photo into a clean, shop-ready product image. This uses Google Gemini, so it needs a billing-enabled API key (see Settings).</p>
+  <div id="tab-product" data-panel class="mt-4 hidden">
+    <button data-go="home" class="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-ink/70 hover:bg-black/5"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-back"/></svg>Home</button>
+    <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Product Photos</h1>
+    <p class="mt-3 max-w-2xl text-ink/70">Turn a garment photo into a clean, shop-ready product image. The free option cuts the garment out and places it on a clean white background (works best when the garment is on a hanger, mannequin or flat surface, not worn by a person). The AI styles need a billing-enabled Google Gemini key (see Settings).</p>
     <div class="mt-6 grid gap-5 md:grid-cols-2">
       <div>
         <div id="productUpload"></div>
         <label for="prodStyle" class="mt-4 block text-sm font-semibold">Style</label>
         <select id="prodStyle" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-4 py-3">
-          <option value="studio">Studio shot on white background</option>
-          <option value="ghost">Ghost mannequin (3D shape)</option>
-          <option value="flat">Flat lay, from above</option>
+          <option value="cutout">Clean white background cut-out (free)</option>
+          <option value="studio">AI studio shot on white (Gemini, paid)</option>
+          <option value="ghost">AI ghost mannequin (Gemini, paid)</option>
+          <option value="flat">AI flat lay, from above (Gemini, paid)</option>
         </select>
         <button id="prodBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark disabled:opacity-45">Generate Product Image</button>
         <p id="prodStatus" role="status" aria-live="polite" class="mt-2 text-sm text-ink/60"></p>
@@ -134,14 +179,10 @@
   </div>
 
   <!-- Billing -->
-  <div id="tab-billing" data-panel class="mt-8">
+  <div id="tab-billing" data-panel class="mt-4 hidden">
+    <button data-go="home" class="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-ink/70 hover:bg-black/5"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-back"/></svg>Home</button>
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Billing</h1>
     <p class="mt-3 max-w-2xl text-ink/70">Create a bill and send it to your customer on WhatsApp. Customers and purchases are saved on this device.</p>
-    <div class="mt-5 grid max-w-2xl grid-cols-3 gap-3" aria-label="Today at a glance">
-      <div class="rounded-2xl bg-white p-3 ring-1 ring-black/5"><p class="text-xs text-ink/60">Today's bills</p><p id="stBills" class="text-xl font-bold">0</p></div>
-      <div class="rounded-2xl bg-white p-3 ring-1 ring-black/5"><p class="text-xs text-ink/60">Today's sales</p><p id="stSales" class="text-xl font-bold">0</p></div>
-      <div class="rounded-2xl bg-amber-50 p-3 ring-1 ring-amber-200"><p class="text-xs text-amber-800">Pay Later dues</p><p id="stDue" class="text-xl font-bold text-amber-900">0</p></div>
-    </div>
     <div class="mt-6 grid gap-5 lg:grid-cols-2">
       <div class="rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/5">
         <label for="bName" class="block text-sm font-semibold">Customer name</label>
@@ -155,12 +196,12 @@
         <div class="mt-4 grid grid-cols-3 gap-2">
           <div><label for="bDisc" class="text-xs font-semibold">Discount</label><input id="bDisc" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent"></div>
           <div><label for="bGst" class="text-xs font-semibold">GST %</label><select id="bGst" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option value="0">None</option><option>5</option><option>12</option><option>18</option><option>28</option></select></div>
-          <div><label for="bPay" class="text-xs font-semibold">Payment</label><select id="bPay" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option>Cash</option><option>UPI</option><option>Card</option><option>Pay Later</option></select></div>
+          <div><label for="bPay" class="text-xs font-semibold">Payment</label><select id="bPay" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-2 py-2.5"><option value="Cash">Cash</option><option value="UPI">UPI</option><option value="Card">Card</option><option value="Pay Later">Pay Later</option></select></div>
         </div>
         <div id="dueBox" class="mt-4 hidden rounded-2xl bg-amber-50 p-4"><label for="bDue" class="block text-sm font-semibold">Customer will pay by (optional)</label><input id="bDue" type="date" class="mt-1 w-full rounded-xl border border-ink/20 px-3 py-2.5 focus:border-accent"><p class="mt-1 text-xs text-ink/60">This bill is added to the Pay Later list, where you can send a WhatsApp reminder.</p></div>
         <div id="upiBox" class="mt-4 hidden rounded-2xl bg-paper p-4" aria-live="polite"></div>
         <p class="mt-4 flex justify-between text-lg font-bold"><span>Total</span><span id="billTotal">0.00</span></p>
-        <button id="billBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark active:scale-[.98]">Generate Bill &amp; Open WhatsApp</button>
+        <button id="billBtn" class="mt-4 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark active:scale-[.98]"><svg class="pointer-events-none h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>Generate Bill &amp; Open WhatsApp</button>
         <p class="mt-2 text-xs text-ink/60">WhatsApp opens with the bill ready to send. You tap Send there.</p>
       </div>
       <div id="billOut" class="self-start rounded-3xl bg-white p-5 shadow-xl shadow-black/5 ring-1 ring-black/5"><p class="py-10 text-center text-ink/50">Your bill will appear here after you generate it. You can then send it on WhatsApp or print it.</p></div>
@@ -168,33 +209,51 @@
   </div>
 
   <!-- Pay Later -->
-  <div id="tab-dues" data-panel class="mt-8 hidden">
+  <div id="tab-dues" data-panel class="mt-4 hidden">
+    <button data-go="home" class="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-ink/70 hover:bg-black/5"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-back"/></svg>Home</button>
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Pay Later</h1>
     <p class="mt-3 max-w-2xl text-ink/70">Customers who said they will pay later are listed here. Send a payment reminder on WhatsApp, and tap Mark paid once the money arrives. Total pending: <b id="dueTotal">0</b></p>
     <div id="dueList" class="mt-5 grid gap-3 md:grid-cols-2"></div>
   </div>
 
   <!-- Customers -->
-  <div id="tab-customers" data-panel class="mt-8 hidden">
+  <div id="tab-customers" data-panel class="mt-4 hidden">
+    <button data-go="home" class="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-ink/70 hover:bg-black/5"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-back"/></svg>Home</button>
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Customers</h1>
     <p class="mt-3 max-w-2xl text-ink/70">Everyone you have billed is saved here with what they bought. Tap a name to see their purchases, or start a new bill for them.</p>
     <label for="custSearch" class="sr-only">Search customers</label>
     <input id="custSearch" type="search" placeholder="Search by name or number" class="mt-5 w-full max-w-md rounded-xl border border-ink/20 bg-white px-4 py-3 focus:border-accent">
     <div id="custList" class="mt-5 grid gap-3 md:grid-cols-2"></div>
   </div>
-  <div id="tab-marketing" data-panel class="mt-8 hidden">
+  <div id="tab-marketing" data-panel class="mt-4 hidden">
+    <button data-go="home" class="mb-4 inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold text-ink/70 hover:bg-black/5"><svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-back"/></svg>Home</button>
     <h1 class="font-display text-3xl sm:text-5xl font-bold tracking-tight">Marketing</h1>
     <p class="mt-3 max-w-2xl text-ink/70">Write your offer or message. EasyBiz makes a PDF with your message and all customer details, then opens WhatsApp to our marketing team, who take it from there.</p>
     <div class="mt-5 max-w-2xl rounded-3xl bg-white p-5 shadow-sm ring-1 ring-black/5">
       <label for="mktText" class="block text-sm font-semibold">Message for your customers</label>
       <textarea id="mktText" rows="5" maxlength="1000" placeholder="e.g. Festive sale: flat 20% off on all shirts this week!" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></textarea>
       <p class="mt-2 text-sm text-ink/60"><span id="mktCount">0</span> saved customers will be included. Only send promotions to customers who agreed to receive them.</p>
-      <button id="mktBtn" class="mt-4 w-full rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark">Create PDF &amp; send to marketing team</button>
+      <button id="mktBtn" class="mt-4 flex w-full items-center justify-center gap-2.5 rounded-2xl bg-accent px-6 py-4 text-lg font-semibold text-white transition hover:bg-accent-dark"><svg class="pointer-events-none h-6 w-6 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>Create PDF &amp; send to marketing team</button>
       <p id="mktStatus" role="status" aria-live="polite" class="mt-3 text-sm text-ink/70"></p>
       <p class="mt-2 text-xs text-ink/50">The PDF supports English letters only. Your full message is also placed in the WhatsApp chat.</p>
     </div>
   </div>
 </main>
+
+<!-- Plan & recharge -->
+<div id="planPanel" class="fixed inset-0 z-[90] hidden items-center justify-center bg-ink/60 p-4" role="dialog" aria-modal="true" aria-labelledby="planPanelTitle">
+  <div class="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
+    <h2 id="planPanelTitle" class="font-display text-2xl font-bold">Plan &amp; recharge</h2>
+    <p id="planLeft" class="mt-3 font-display text-4xl font-bold text-accent" aria-live="polite"></p>
+    <p id="planStatus" class="text-sm text-ink/60"></p>
+    <p class="mt-5 text-sm font-semibold">Recharge plans</p>
+    <div id="planOptsSet" class="mt-2 grid gap-2"></div>
+    <label for="setCode" class="mt-5 block text-sm font-semibold">Have a recharge code?</label>
+    <div class="mt-1 flex gap-2"><input id="setCode" autocomplete="off" autocapitalize="characters" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"><button id="setCodeBtn" type="button" class="rounded-xl border border-ink/20 px-4 text-sm font-semibold hover:bg-black/5">Apply</button></div>
+    <p id="setCodeMsg" class="mt-1 text-sm text-ink/70"></p>
+    <button id="planClose" class="mt-4 w-full rounded-xl border border-ink/20 px-4 py-3 font-semibold hover:bg-black/5">Close</button>
+  </div>
+</div>
 
 <!-- Help & support -->
 <div id="helpModal" class="fixed inset-0 z-[90] hidden items-center justify-center bg-ink/60 p-4" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
@@ -204,7 +263,7 @@
     <p class="mt-2 text-lg font-semibold">+91 85140 12448</p>
     <div class="mt-4 grid grid-cols-2 gap-3">
       <a href="tel:+918514012448" class="rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Call</a>
-      <a href="https://wa.me/918514012448?text=Hello%2C%20I%20need%20help%20with%20EasyBiz." target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700">WhatsApp</a>
+      <a href="https://wa.me/918514012448?text=Hello%2C%20I%20need%20help%20with%20EasyBiz." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700"><svg class="pointer-events-none h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
     </div>
     <button id="helpClose" class="mt-4 w-full rounded-xl border border-ink/20 px-4 py-3 font-semibold hover:bg-black/5">Close</button>
   </div>
@@ -212,13 +271,15 @@
 
 <!-- Plan-ended lock screen -->
 <div id="planModal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-ink/80 p-4" role="alertdialog" aria-modal="true" aria-labelledby="planTitle">
-  <div class="w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl">
+  <div class="max-h-[92vh] w-full max-w-md overflow-y-auto rounded-3xl bg-white p-6 text-center shadow-2xl">
     <h2 id="planTitle" class="font-display text-2xl font-bold">Your plan has ended</h2>
     <p class="mt-2 text-ink/70">To keep using EasyBiz, please contact us to renew: <b>+91 98836 48195</b></p>
     <div class="mt-4 grid grid-cols-2 gap-3">
       <a href="tel:+919883648195" class="rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Call</a>
-      <a href="https://wa.me/919883648195?text=Hello%2C%20I%20want%20to%20renew%20my%20EasyBiz%20plan." target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700">WhatsApp</a>
+      <a href="https://wa.me/919883648195?text=Hello%2C%20I%20want%20to%20renew%20my%20EasyBiz%20plan." target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 font-semibold text-white hover:bg-emerald-700"><svg class="pointer-events-none h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>WhatsApp</a>
     </div>
+    <p class="mt-5 text-left text-sm font-semibold">Choose a plan to recharge</p>
+    <div id="planOptsModal" class="mt-2 grid gap-2"></div>
     <label for="planCode" class="mt-5 block text-left text-sm font-semibold">Have a recharge code?</label>
     <div class="mt-1 flex gap-2"><input id="planCode" autocomplete="off" autocapitalize="characters" placeholder="Enter code" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"><button id="planCodeBtn" type="button" class="rounded-xl border border-ink/20 px-4 font-semibold hover:bg-black/5">Activate</button></div>
     <p id="planCodeMsg" role="alert" class="mt-2 text-sm text-red-700"></p>
@@ -244,6 +305,11 @@
       <div><label for="shopCc" class="block text-sm">Country code</label><input id="shopCc" inputmode="numeric" placeholder="91" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></div>
       <div><label for="shopCur" class="block text-sm">Currency symbol</label><input id="shopCur" placeholder="₹" class="mt-1 w-full rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"></div>
     </div>
+    <label for="shopSendAs" class="mt-3 block text-sm">Send bills on WhatsApp as</label>
+    <select id="shopSendAs" class="mt-1 w-full rounded-xl border border-ink/20 bg-white px-3 py-2.5">
+      <option value="text">Plain text message</option>
+      <option value="photo">Photo of the bill (image)</option>
+    </select>
     <details class="mt-3 rounded-xl border border-ink/10 bg-white p-3">
       <summary class="cursor-pointer text-sm font-semibold">More bill details (optional)</summary>
       <label for="shopAddr" class="mt-3 block text-sm">Address</label>
@@ -279,6 +345,9 @@
   </div>
   <p id="hfStatus" class="mt-1 text-xs text-ink/60"></p>
 
+  <label for="langSel" class="mt-5 block text-sm font-semibold">Language</label>
+  <select id="langSel" class="mt-2 w-full rounded-xl border border-ink/20 bg-white px-4 py-3"><option value="en">English</option><option value="hi">हिन्दी (Hindi)</option><option value="bn">বাংলা (Bengali)</option></select>
+
   <div id="keyStatus" class="mt-5 inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1.5 text-sm font-medium text-amber-800" role="status">
     <span class="h-2 w-2 rounded-full bg-amber-500"></span><span id="keyStatusText">No API key saved</span>
   </div>
@@ -291,14 +360,6 @@
   <div class="mt-4 flex gap-3">
     <button id="saveKey" class="flex-1 rounded-xl bg-accent px-4 py-3 font-semibold text-white hover:bg-accent-dark">Save API Key</button>
     <button id="removeKey" class="rounded-xl border border-red-300 px-4 py-3 font-semibold text-red-700 hover:bg-red-50">Remove API Key</button>
-  </div>
-
-  <div class="mt-5 rounded-2xl bg-paper p-4">
-    <p class="text-sm font-semibold">Plan</p>
-    <p id="planStatus" class="mt-1 text-sm text-ink/70"></p>
-    <label for="setCode" class="mt-3 block text-sm">Recharge code</label>
-    <div class="mt-1 flex gap-2"><input id="setCode" autocomplete="off" autocapitalize="characters" class="min-w-0 flex-1 rounded-xl border border-ink/20 px-4 py-3 focus:border-accent"><button id="setCodeBtn" type="button" class="rounded-xl border border-ink/20 px-4 text-sm font-semibold hover:bg-black/5">Apply</button></div>
-    <p id="setCodeMsg" class="mt-1 text-sm text-ink/70"></p>
   </div>
 
   <div class="mt-8 rounded-2xl bg-accent-soft p-4 text-sm leading-relaxed text-ink/80">
@@ -351,6 +412,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   let resultUrl = null, resultMime = 'image/png', busy = false;
 
   const $ = (id) => document.getElementById(id);
+  const WA = '<svg class="pointer-events-none h-5 w-5 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#i-wa"/></svg>';
 
   // ---------- Alerts ----------
   function showError(msg, type = 'error') {
@@ -678,26 +740,32 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
 
   // ================= Tabs =================
-  function showTab(name) {
+  let currentTab = 'home';
+  /** Shows one screen (home or a feature). Uses browser history so the phone's Back button returns to Home. */
+  function showTab(name, push = true) {
     document.querySelectorAll('[data-panel]').forEach((el) => el.classList.toggle('hidden', el.id !== `tab-${name}`));
-    document.querySelectorAll('.tabbtn').forEach((b) => {
-      const on = b.dataset.tab === name;
-      b.setAttribute('aria-selected', String(on));
-      b.className = `tabbtn shrink-0 rounded-full px-5 py-2.5 text-sm font-semibold ${on ? 'bg-ink text-white' : 'bg-white ring-1 ring-black/10 hover:bg-black/5'}`;
-    });
+    if (name === 'home') renderHome();
     if (name === 'customers') renderCustomers();
     if (name === 'dues') renderDues();
-    if (name === 'billing') renderStats();
     if (name === 'marketing') $('mktCount').textContent = Object.keys(readJ(LS.cust, {})).length;
-    hideError();
+    if (push && name !== currentTab) { try { history.pushState({ tab: name }, ''); } catch {} }
+    currentTab = name; hideError(); window.scrollTo(0, 0);
+  }
+  window.addEventListener('popstate', (e) => showTab((e.state && e.state.tab) || 'home', false));
+  function renderHome() {
+    const name = getShop().name;
+    $('welcome').textContent = name ? `Hello! ${name}` : 'Hello!';
+    $('welcomeSub').textContent = name ? 'What would you like to do today?' : 'Add your shop name to personalise your bills and this screen.';
+    $('welcomeAdd').classList.toggle('hidden', !!name);
+    renderStats();
   }
 
   // ================= Local data =================
   const LS = { shop: 'easy_trial_shop', cust: 'easy_trial_customers', bills: 'easy_trial_bills' };
   const readJ = (k, d) => { try { return JSON.parse(localStorage.getItem(k)) || d; } catch { return d; } };
   const writeJ = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
-  const SHOP_F = { address: 'shopAddr', payee: 'shopPayee', phone: 'shopPhone', email: 'shopEmail', gstin: 'shopGstin', pan: 'shopPan', upi: 'shopUpi', terms: 'shopTerms' };
-  const getShop = () => ({ name: '', cc: '91', cur: '₹', address: '', payee: '', phone: '', email: '', gstin: '', pan: '', upi: '', terms: '', ...readJ(LS.shop, {}) });
+  const SHOP_F = { sendAs: 'shopSendAs', address: 'shopAddr', payee: 'shopPayee', phone: 'shopPhone', email: 'shopEmail', gstin: 'shopGstin', pan: 'shopPan', upi: 'shopUpi', terms: 'shopTerms' };
+  const getShop = () => ({ name: '', cc: '91', cur: '₹', sendAs: 'text', address: '', payee: '', phone: '', email: '', gstin: '', pan: '', upi: '', terms: '', ...readJ(LS.shop, {}) });
   const esc = (v) => String(v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const fm = (cur, n) => `${cur}${Number(n).toFixed(2)}`;
   const fmtDate = (iso) => new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -709,7 +777,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     sh.gstin = sh.gstin.toUpperCase(); sh.pan = sh.pan.toUpperCase();
     if (sh.gstin && !/^\d{2}[A-Z]{5}\d{4}[A-Z][A-Z\d]Z[A-Z\d]$/.test(sh.gstin)) { $('shopMsg').textContent = 'That GSTIN doesn\'t look valid (15 characters). Please check it.'; return; }
     if (!writeJ(LS.shop, sh)) { $('shopMsg').textContent = 'Couldn\'t save (browser storage is blocked).'; return; }
-    $('shopMsg').textContent = ''; $('shopCc').value = cc; $('shopGstin').value = sh.gstin; $('shopPan').value = sh.pan; renderUpiBox(); renderStats(); closeDrawer();
+    $('shopMsg').textContent = ''; $('shopCc').value = cc; $('shopGstin').value = sh.gstin; $('shopPan').value = sh.pan; renderUpiBox(); renderHome(); closeDrawer();
   }
   function loadShop() {
     const sh = getShop(); $('shopName').value = sh.name; $('shopCc').value = sh.cc; $('shopCur').value = sh.cur;
@@ -752,15 +820,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if (i.address) L.push(i.address);
     const ct = [i.phone && `Ph: ${i.phone}`, i.email].filter(Boolean).join(' | '); if (ct) L.push(ct);
     if (i.gstin) L.push(`GSTIN: ${i.gstin}`); if (i.pan) L.push(`PAN: ${i.pan}`);
-    L.push('', i.gstin ? '*TAX INVOICE*' : '*CASH MEMO*', `Bill No: ${invNo(b)}`, `Date: ${fmtDate(b.date)}`, `Customer: ${b.name} (+${b.phone})`, '------------------');
+    L.push('', `*${tr(i.gstin ? 'TAX INVOICE' : 'CASH MEMO')}*`, `${tr('Bill No:')} ${invNo(b)}`, `${tr('Date:')} ${fmtDate(b.date)}`, `${tr('Customer:')} ${b.name} (+${b.phone})`, '------------------');
     b.items.forEach((x, n) => L.push(`${n + 1}. ${x.name}`, `    ${x.qty} x ${fm(c, x.price)} = ${fm(c, x.qty * x.price)}`));
-    L.push('------------------', `Subtotal: ${fm(c, sub)}`);
-    if (b.disc > 0) L.push(`Discount: -${fm(c, b.disc)}`);
+    L.push('------------------', `${tr('Subtotal')}: ${fm(c, sub)}`);
+    if (b.disc > 0) L.push(`${tr('Discount')}: -${fm(c, b.disc)}`);
     if (b.rate > 0) L.push(`CGST @ ${b.rate / 2}%: ${fm(c, b.cgst)}`, `SGST @ ${b.rate / 2}%: ${fm(c, b.sgst)}`);
-    L.push(`*${isLater(b) && !b.paid ? 'Amount Due' : 'Grand Total'}: ${fm(c, b.total)}*`);
-    if (b.pay) L.push(`Payment: ${payLabel(b)}`); if (i.upi) L.push(`UPI ID: ${i.upi}`);
-    if (i.terms) L.push('', `Terms: ${i.terms}`);
-    L.push('', `Thank you for shopping with ${b.shop}! 🙏`, 'We truly appreciate your visit and hope to see you again soon.');
+    L.push(`*${isLater(b) && !b.paid ? tr('Amount Due') : tr('Grand Total')}: ${fm(c, b.total)}*`);
+    if (b.pay) L.push(`${tr('Payment')}: ${payLabel(b)}`); if (i.upi) L.push(`UPI ID: ${i.upi}`);
+    if (i.terms) L.push('', `${tr('Terms')}: ${i.terms}`);
+    L.push('', `${trf('Thank you for shopping with {s}!', { s: b.shop })} 🙏`, tr('We truly appreciate your visit and hope to see you again soon.'));
     return L.join('\n');
   };
   const waUrl = (b) => `https://wa.me/${b.phone}?text=${encodeURIComponent(billText(b))}`;
@@ -771,6 +839,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function renderBill(b) {
     const i = b.info || {}, c = b.cur, sub = b.sub ?? b.total;
     const qr = b.pay === 'UPI' && i.upi && b.total > 0 ? qrDataUrl(upiLink(i, b.shop, b.total, invNo(b))) : '';
+    const mode = getShop().sendAs === 'photo' ? 'photo' : 'text', asPhoto = mode === 'photo';
     const row = (l, v, cls = '') => `<p class="flex justify-between py-0.5 ${cls}"><span>${l}</span><span>${v}</span></p>`;
     const el = $('billOut');
     el.innerHTML = `<p class="text-center text-xs font-bold tracking-widest text-ink/60">${i.gstin ? 'TAX INVOICE' : 'CASH MEMO'}</p>
@@ -784,11 +853,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       ${qr ? `<div class="mt-3 text-center"><img src="${qr}" alt="UPI payment QR code" class="mx-auto h-44 w-44" style="image-rendering:pixelated"><p class="text-sm">Scan to pay <b>${fm(c, b.total)}</b> to <b>${esc(i.payee || b.shop)}</b></p></div>` : ''}
       ${i.terms ? `<p class="mt-2 text-xs text-ink/60">Terms: ${esc(i.terms)}</p>` : ''}
       <p class="mt-4 text-center text-sm font-medium">Thank you for shopping with ${esc(b.shop)}! 🙏<br><span class="font-normal text-ink/60">We truly appreciate your visit and hope to see you again soon.</span></p>
-      <div class="no-print mt-4 flex flex-col gap-2 sm:flex-row">
-        <a href="${waUrl(b)}" target="_blank" rel="noopener" class="rounded-xl bg-emerald-600 px-5 py-3 text-center font-semibold text-white hover:bg-emerald-700">Send on WhatsApp</a>
+      <div class="no-print mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+        <button id="sendBill" class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700">${WA}${asPhoto ? 'Send photo on WhatsApp' : 'Send on WhatsApp'}</button>
+        <button id="sendAlt" class="rounded-xl border border-ink/20 px-5 py-3 font-semibold hover:bg-black/5">${asPhoto ? 'Send as text instead' : 'Send as photo instead'}</button>
         <button id="printBill" class="rounded-xl border border-ink/20 px-5 py-3 font-semibold hover:bg-black/5">Print / Save PDF</button>
-      </div>`;
+      </div>
+      <p id="billMsg" class="no-print mt-2 text-sm text-ink/70"></p>`;
     el.classList.remove('hidden');
+    $('sendBill').onclick = () => sendBill(b, mode);
+    $('sendAlt').onclick = () => sendBill(b, asPhoto ? 'text' : 'photo');
     $('printBill').onclick = () => window.print();
   }
   function generateBill() {
@@ -808,7 +881,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if (!(writeJ(LS.bills, bills) && writeJ(LS.cust, cust))) showError('The bill was made, but couldn\'t be saved on this device (storage blocked or full).', 'warn');
     renderBill(bill); renderCustomers(); renderStats();
     $('bName').value = ''; $('bPhone').value = ''; $('bDisc').value = ''; $('bGst').value = '0'; $('bDue').value = ''; $('items').innerHTML = ''; addItemRow(); updateTotal();
-    openWhatsApp(bill); // runs inside the click, so the browser allows the popup
+    sendBill(bill, getShop().sendAs === 'photo' ? 'photo' : 'text'); // runs inside the click, so the browser allows the popup / share
   }
 
   // ================= Customers =================
@@ -856,6 +929,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   async function generateProduct() {
     if (prodBusy || planLocked()) return;
     if (!files.product) { showError('Upload a garment photo first.', 'warn'); return; }
+    if ($('prodStyle').value === 'cutout') return generateCutout();
     if (!getKey()) { showError('Product images use Gemini. Add a billing-enabled Gemini API key in Settings, and set Image engine as you like.', 'warn'); return; }
     hideError(); prodBusy = true; $('prodBtn').disabled = true; $('prodStatus').textContent = 'Creating your product image… this may take a little time.';
     try {
@@ -875,9 +949,62 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     document.body.appendChild(a); a.click(); a.remove();
   }
 
+  // ================= Free product image: cut-out on white (Hugging Face) =================
+  // Spaces are tried in order. NOTE: BRIA's RMBG models are licensed for non-commercial use unless you have an agreement with BRIA.
+  const CUTOUT_SPACES = [
+    { id: 'briaai/BRIA-RMBG-2.0', endpoint: '/image', args: (img) => ({ image: img }) },
+    { id: 'not-lain/background-removal', endpoint: '/png', args: (img) => ({ f: img }) }
+  ];
+  const friendly = (m) => Object.assign(new Error(m), { friendly: true });
+  /** Crops the transparent cut-out, centers it on a 1024px white square with a soft shadow, returns a PNG blob. */
+  async function composeOnWhite(cutBlob) {
+    const url = URL.createObjectURL(cutBlob);
+    try {
+      const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(friendly('The cut-out image couldn\'t be read.')); i.src = url; });
+      const sw = img.naturalWidth, sh = img.naturalHeight, t = document.createElement('canvas'); t.width = sw; t.height = sh;
+      const tc = t.getContext('2d', { willReadFrequently: true }); tc.drawImage(img, 0, 0);
+      const d = tc.getImageData(0, 0, sw, sh).data; let x0 = sw, y0 = sh, x1 = -1, y1 = -1, solid = 0;
+      for (let y = 0; y < sh; y++) for (let x = 0; x < sw; x++) if (d[(y * sw + x) * 4 + 3] > 16) { solid++; if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+      if (x1 < 0 || solid > sw * sh * 0.98) throw friendly('The service didn\'t return a transparent cut-out. Try a photo where the garment is on a plain background.');
+      const S = 1024, box = S * 0.82, bw = x1 - x0 + 1, bh = y1 - y0 + 1, k = Math.min(box / bw, box / bh), dw = bw * k, dh = bh * k;
+      const o = document.createElement('canvas'); o.width = o.height = S; const oc = o.getContext('2d');
+      oc.fillStyle = '#fff'; oc.fillRect(0, 0, S, S);
+      oc.shadowColor = 'rgba(0,0,0,.18)'; oc.shadowBlur = 28; oc.shadowOffsetY = 12;
+      oc.drawImage(t, x0, y0, bw, bh, (S - dw) / 2, (S - dh) / 2, dw, dh);
+      return await new Promise((res) => o.toBlob(res, 'image/png'));
+    } finally { URL.revokeObjectURL(url); }
+  }
+  async function generateCutout() {
+    hideError(); prodBusy = true; $('prodBtn').disabled = true; $('prodStatus').textContent = 'Removing the background… the free service can take a minute.';
+    try {
+      let b64; try { b64 = await compressImage(files.product, 1024); } catch { throw friendly('That image couldn\'t be read. Try a JPG or PNG.'); }
+      let mod; try { mod = await import(HF_CLIENT_URL); } catch { throw friendly('Couldn\'t load the free connector. Check your internet connection.'); }
+      const token = getHfToken(), img = base64ToBlob(b64, 'image/jpeg');
+      let out = null, lastErr = null;
+      for (const sp of CUTOUT_SPACES) {
+        try { const client = await mod.Client.connect(sp.id, token ? { hf_token: token } : {}); out = await client.predict(sp.endpoint, sp.args(img)); break; }
+        catch (e) { lastErr = e; }
+      }
+      if (!out) throw lastErr || friendly('The free cut-out service is unavailable.');
+      const found = [];
+      (function walk(v) { if (!v) return; if (Array.isArray(v)) v.forEach(walk); else if (typeof v === 'object') { if (v.url) found.push(v.url); else Object.values(v).forEach(walk); } else if (typeof v === 'string' && /^https?:/.test(v)) found.push(v); })(out.data);
+      const url = found[found.length - 1]; // for before/after sliders the last image is the result
+      if (!url) throw friendly('The free service returned no image. Try again.');
+      const r = await fetch(url); if (!r.ok) throw friendly('The cut-out finished but couldn\'t be downloaded. Please try again.');
+      const blob = await composeOnWhite(await r.blob());
+      if (prodUrl) URL.revokeObjectURL(prodUrl);
+      prodUrl = URL.createObjectURL(blob); prodMime = 'image/png';
+      $('prodImg').src = prodUrl; $('prodResult').classList.remove('hidden');
+    } catch (err) {
+      showError(err && err.friendly ? err.message : hfErrorMessage(err).replace(/try-on Space/g, 'cut-out Space').replace(/try-on/g, 'image').replace('HF_SPACES', 'CUTOUT_SPACES'));
+    } finally { prodBusy = false; $('prodBtn').disabled = false; $('prodStatus').textContent = ''; }
+  }
+
   function initExtras() {
-    document.querySelectorAll('.tabbtn').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
-    showTab('billing'); loadShop();
+    initLang();
+    document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => showTab(b.dataset.go)));
+    $('welcomeAdd').addEventListener('click', openDrawer);
+    loadShop(); showTab('home');
     $('saveShop').addEventListener('click', saveShop);
     addItemRow();
     $('addItem').addEventListener('click', addItemRow);
@@ -891,7 +1018,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     $('prodDl').addEventListener('click', downloadProduct);
     $('bPay').addEventListener('change', renderUpiBox);
     $('dueList').addEventListener('click', onDueClick);
+    renderPlans(); $('planOptsModal').addEventListener('click', onPlanClick); $('planOptsSet').addEventListener('click', onPlanClick);
     renderStats();
+    const planOpen = (on) => { $('planPanel').classList.toggle('hidden', !on); $('planPanel').classList.toggle('flex', on); if (on) { planLocked(); $('planClose').focus(); } else $('planChip').focus(); };
+    $('planChip').addEventListener('click', () => planOpen(true)); $('planClose').addEventListener('click', () => planOpen(false));
+    $('planPanel').addEventListener('click', (e) => { if (e.target === $('planPanel')) planOpen(false); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('planPanel').classList.contains('hidden')) planOpen(false); });
     const help = (on) => { $('helpModal').classList.toggle('hidden', !on); $('helpModal').classList.toggle('flex', on); if (on) $('helpClose').focus(); else $('helpBtn').focus(); };
     $('helpBtn').addEventListener('click', () => help(true)); $('helpClose').addEventListener('click', () => help(false));
     $('helpModal').addEventListener('click', (e) => { if (e.target === $('helpModal')) help(false); });
@@ -906,15 +1038,82 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if (ms > 0 && ms <= 7 * 864e5) showError(`Your free plan ends in ${timeLeft(ms)}. To keep using EasyBiz, contact +91 98836 48195 for a recharge code.`, 'warn');
   }
 
+  // ================= Bill as a photo =================
+  /** Draws the bill onto a canvas (works offline, no libraries). */
+  function billCanvas(b) {
+    const i = b.info || {}, c = b.cur, W = 720, P = 36, sub = b.sub ?? b.total, later = isLater(b) && !b.paid;
+    let qr = null;
+    if (b.pay === 'UPI' && i.upi && b.total > 0) { try { qr = qrcode(0, 'M'); qr.addData(upiLink(i, b.shop, b.total, invNo(b))); qr.make(); } catch { qr = null; } }
+    const F = (sz, w = 400) => `${w} ${sz}px Inter, system-ui, sans-serif`;
+    const run = (ctx, draw, H) => {
+      let y = P;
+      if (draw) { ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, W, H); ctx.textBaseline = 'alphabetic'; }
+      const put = (t, x, font, color, align) => { if (draw) { ctx.font = font; ctx.fillStyle = color; ctx.textAlign = align; ctx.fillText(t, x, y); } };
+      const wrap = (t, font) => { ctx.font = font; const out = []; let cur = ''; String(t).split(' ').forEach((wd) => { const test = cur ? `${cur} ${wd}` : wd; if (cur && ctx.measureText(test).width > W - 2 * P) { out.push(cur); cur = wd; } else cur = test; }); out.push(cur); return out; };
+      const para = (t, sz, w, color, align, gap = 4) => wrap(t, F(sz, w)).forEach((l) => { y += sz + gap; put(l, align === 'center' ? W / 2 : P, F(sz, w), color, align); });
+      const row = (l, r, sz = 18, w = 400, color = '#26242B') => { y += sz + 8; put(l, P, F(sz, w), color, 'left'); put(r, W - P, F(sz, w), color, 'right'); };
+      const rule = () => { y += 12; if (draw) { ctx.fillStyle = '#D9D5CC'; ctx.fillRect(P, y, W - 2 * P, 1); } y += 4; };
+      para(b.shop, 30, 700, '#26242B', 'center', 6);
+      if (i.address) para(i.address, 15, 400, '#666', 'center');
+      const ct = [i.phone && `Ph: ${i.phone}`, i.email].filter(Boolean).join('  |  '); if (ct) para(ct, 15, 400, '#666', 'center');
+      if (i.gstin) para(`GSTIN: ${i.gstin}`, 15, 400, '#666', 'center');
+      if (i.pan) para(`PAN: ${i.pan}`, 15, 400, '#666', 'center');
+      rule(); y += 6; para(tr(i.gstin ? 'TAX INVOICE' : 'CASH MEMO'), 16, 700, '#5B47D6', 'center');
+      row(`${tr('Bill No:')} ${invNo(b)}`, fmtDate(b.date), 16);
+      para(`${tr('Customer:')} ${b.name} (+${b.phone})`, 16, 400, '#26242B', 'left', 8);
+      rule();
+      b.items.forEach((x) => { para(x.name, 17, 600, '#26242B', 'left', 8); row(`${x.qty} x ${fm(c, x.price)}`, fm(c, x.qty * x.price), 16, 400, '#666'); });
+      rule();
+      row(tr('Subtotal'), fm(c, sub), 17);
+      if (b.disc > 0) row(tr('Discount'), `-${fm(c, b.disc)}`, 17);
+      if (b.rate > 0) { row(`CGST @ ${b.rate / 2}%`, fm(c, b.cgst), 17); row(`SGST @ ${b.rate / 2}%`, fm(c, b.sgst), 17); }
+      y += 4; row(later ? tr('Amount Due') : tr('Grand Total'), fm(c, b.total), 26, 700);
+      if (b.pay) para(`${tr('Payment')}: ${payLabel(b)}`, 16, 400, '#666', 'left', 10);
+      if (qr) {
+        const n = qr.getModuleCount(), cell = Math.floor(240 / (n + 4)), size = cell * (n + 4);
+        y += 18;
+        if (draw) { const x0 = (W - size) / 2; ctx.fillStyle = '#fff'; ctx.fillRect(x0, y, size, size); ctx.fillStyle = '#000'; for (let r = 0; r < n; r++) for (let k = 0; k < n; k++) if (qr.isDark(r, k)) ctx.fillRect(x0 + (k + 2) * cell, y + (r + 2) * cell, cell, cell); }
+        y += size; para(trf('Scan to pay {a} to {p}', { a: fm(c, b.total), p: i.payee || b.shop }), 15, 400, '#666', 'center', 8);
+      }
+      if (i.terms) { y += 6; para(`${tr('Terms')}: ${i.terms}`, 13, 400, '#888', 'left'); }
+      rule(); y += 8; para(trf('Thank you for shopping with {s}!', { s: b.shop }), 19, 700, '#26242B', 'center', 8);
+      para(tr('We truly appreciate your visit and hope to see you again soon.'), 14, 400, '#666', 'center');
+      return y + P;
+    };
+    const H = Math.ceil(run(document.createElement('canvas').getContext('2d'), false, 0));
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H; run(cv.getContext('2d'), true, H);
+    return cv;
+  }
+  const setBillMsg = (t) => { const m = $('billMsg'); if (m) m.textContent = t; };
+  /** Sends the bill on WhatsApp as plain text, or as a photo (share sheet on phones, download + chat otherwise). */
+  function sendBill(b, mode) {
+    if (mode !== 'photo') { setBillMsg(''); openWhatsApp(b); return; }
+    let blob = null;
+    try { blob = base64ToBlob(billCanvas(b).toDataURL('image/png').split(',')[1], 'image/png'); } catch {}
+    if (!blob) { showError('Couldn\'t create the bill photo, so the bill was sent as text instead.', 'warn'); openWhatsApp(b); return; }
+    const file = new File([blob], `${invNo(b)}.png`, { type: 'image/png' });
+    const caption = `Bill ${invNo(b)} for ${b.name} from ${b.shop}. Total: ${fm(b.cur, b.total)}. Thank you for shopping with ${b.shop}!`;
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      setBillMsg(`In the share sheet choose WhatsApp, then pick ${b.name} (+${b.phone}) and send.`);
+      navigator.share({ files: [file], text: caption }).then(() => setBillMsg('')).catch(() => {});
+      return;
+    }
+    const url = URL.createObjectURL(blob), a = document.createElement('a'); a.href = url; a.download = `${invNo(b)}.png`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
+    const w = window.open(`https://wa.me/${b.phone}?text=${encodeURIComponent(caption)}`, '_blank'); if (w) w.opener = null;
+    setBillMsg('The bill photo was downloaded. In the WhatsApp chat, tap the attach (📎) button, choose the photo, and press Send.');
+  }
+
   // ================= Pay Later =================
   const isLater = (b) => b.pay === 'Pay Later' || b.pay === 'Credit';
-  const payLabel = (b) => isLater(b) ? (b.paid ? 'Pay Later (paid)' : `PAY LATER - payment pending${b.due ? ` (by ${fmtDate(b.due)})` : ''}`) : b.pay;
+  const payLabel = (b) => isLater(b) ? (b.paid ? `${tr('Pay Later')} (${tr('paid')})` : `${tr('Pay Later')} - ${tr('payment pending')}${b.due ? ` (${tr('due by')} ${fmtDate(b.due)})` : ''}`) : tr(b.pay);
   function renderStats() {
     const bills = readJ(LS.bills, []), cur = getShop().cur, today = new Date().toDateString();
     const td = bills.filter((b) => new Date(b.date).toDateString() === today), due = bills.filter((b) => isLater(b) && !b.paid);
     $('stBills').textContent = td.length;
     $('stSales').textContent = fm(cur, td.reduce((t, b) => t + b.total, 0));
     $('stDue').textContent = fm(cur, due.reduce((t, b) => t + b.total, 0));
+    $('dueBadge').textContent = due.length; $('dueBadge').classList.toggle('hidden', !due.length);
   }
   function renderDues() {
     const pending = readJ(LS.bills, []).filter((b) => isLater(b) && !b.paid), by = {}, today = new Date().toISOString().slice(0, 10);
@@ -926,15 +1125,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       return `<div class="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5" data-phone="${esc(ph)}">
         <div class="flex justify-between gap-3"><div><p class="font-semibold">${esc(bs[0].name)}</p><p class="text-sm text-ink/60">+${esc(ph)}${late ? ' · <span class="font-semibold text-red-700">Overdue</span>' : ''}</p></div><p class="text-lg font-bold ${late ? 'text-red-700' : ''}">${fm(bs[0].cur, tot)}</p></div>
         <ul class="mt-3 space-y-2 text-sm">${bs.map((b) => `<li class="flex items-center justify-between gap-2 rounded-xl bg-paper p-3"><span>${invNo(b)} · ${fmtDate(b.date)}${b.due ? ` · due ${fmtDate(b.due)}` : ''}</span><span class="flex items-center gap-2"><b>${fm(b.cur, b.total)}</b><button data-act="paid" data-no="${b.no}" class="rounded-lg border border-ink/20 px-2 py-1 text-xs font-semibold hover:bg-black/5">Mark paid</button></span></li>`).join('')}</ul>
-        <button data-act="remind" class="mt-3 w-full rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white hover:bg-emerald-700">Send reminder on WhatsApp</button></div>`;
+        <button data-act="remind" class="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 font-semibold text-white hover:bg-emerald-700">${WA}Send reminder on WhatsApp</button></div>`;
     }).join('') : '<p class="text-ink/60">No pending payments. Bills made with "Pay Later" appear here.</p>';
   }
   function reminderText(bs) {
     const sh = getShop(), cur = bs[0].cur, tot = bs.reduce((t, b) => t + b.total, 0);
-    const L = [`Hello ${bs[0].name},`, `This is a friendly reminder from *${sh.name || bs[0].shop}*.`, '', `Your payment of *${fm(cur, tot)}* is pending:`,
-      ...bs.map((b) => `- ${invNo(b)} (${fmtDate(b.date)}): ${fm(cur, b.total)}${b.due ? `, due by ${fmtDate(b.due)}` : ''}`), ''];
-    if (sh.upi) L.push(`You can pay by UPI: ${sh.upi}${sh.payee ? ` (${sh.payee})` : ''}`);
-    L.push('', `Thank you for shopping with ${sh.name || bs[0].shop}! 🙏`);
+    const nm = sh.name || bs[0].shop;
+    const L = [trf('Hello {n},', { n: bs[0].name }), trf('This is a friendly reminder from *{s}*.', { s: nm }), '', trf('Your payment of *{a}* is pending:', { a: fm(cur, tot) }),
+      ...bs.map((b) => `- ${invNo(b)} (${fmtDate(b.date)}): ${fm(cur, b.total)}${b.due ? trf(', due by {d}', { d: fmtDate(b.due) }) : ''}`), ''];
+    if (sh.upi) L.push(trf('You can pay by UPI: {u}', { u: sh.upi + (sh.payee ? ` (${sh.payee})` : '') }));
+    L.push('', `${trf('Thank you for shopping with {s}!', { s: nm })} 🙏`);
     return L.join('\n');
   }
   function onDueClick(e) {
@@ -986,16 +1186,44 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     $('planModal').classList.toggle('hidden', !locked); $('planModal').classList.toggle('flex', locked);
     document.querySelector('main').inert = locked; document.querySelector('header').inert = locked;
     if (locked) $('drawer').classList.remove('open'), $('overlay').classList.remove('open');
-    $('planStatus').textContent = locked ? 'Plan ended.' : `Active until ${new Date(p.exp).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })} (${timeLeft(p.exp - now)} left).`;
+    const ms = p.exp - now, hrs = Math.ceil(ms / 36e5), dys = Math.ceil(ms / 864e5);
+    const left = locked ? 'Plan ended' : hrs < 24 ? `${hrs} hr${hrs === 1 ? '' : 's'} left` : `${dys} day${dys === 1 ? '' : 's'} left`;
+    $('planChipText').textContent = left; $('planLeft').textContent = left;
+    $('planChip').className = `mr-2 rounded-full px-3 py-2 text-sm font-semibold ${locked ? 'bg-red-100 text-red-700' : ms < 3 * 864e5 ? 'bg-amber-100 text-amber-800' : 'bg-accent-soft text-accent'}`;
+    $('planStatus').textContent = locked ? '' : `Valid until ${new Date(p.exp).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}`;
     return locked;
   }
+  // Plan prices (per month). Edit here to change the offers.
+  const PLANS = [
+    { id: '1m', label: '1 month', months: 1, perMonth: 199 },
+    { id: '6m', label: '6 months', months: 6, perMonth: 149 },
+    { id: '12m', label: 'Annual (12 months)', months: 12, perMonth: 99, best: true }
+  ];
+  const SALES_NO = '918514012448', CODES_KEY = 'easy_trial_codes';
+  function renderPlans() {
+    const html = PLANS.map((p) => `<button type="button" data-plan="${p.id}" class="flex w-full items-center justify-between gap-3 rounded-xl border border-ink/15 bg-white px-4 py-3 text-left transition hover:border-accent hover:bg-accent-soft"><span><span class="block font-semibold">${p.label}${p.best ? ' <span class="ml-1 rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-white">Best value</span>' : ''}</span><span class="block text-sm text-ink/60">₹${p.perMonth}/month</span></span><span class="text-right"><span class="block text-lg font-bold">₹${p.perMonth * p.months}</span><span class="block text-xs text-ink/50">total</span></span></button>`).join('');
+    ['planOptsModal', 'planOptsSet'].forEach((id) => { $(id).innerHTML = html; });
+  }
+  /** Opens WhatsApp to the sales number with the chosen plan and the shop name. */
+  function onPlanClick(e) {
+    const btn = e.target.closest('[data-plan]'); if (!btn) return;
+    const p = PLANS.find((x) => x.id === btn.dataset.plan), sh = getShop();
+    const msg = ['Hello, I want to recharge my EasyBiz plan.', `Shop: ${sh.name || 'Not set'}`, sh.phone ? `Shop phone: ${sh.phone}` : '', `Plan: ${p.label}`, `Price: ₹${p.perMonth}/month (₹${p.perMonth * p.months} total for ${p.months} month${p.months === 1 ? '' : 's'})`].filter(Boolean).join('\n');
+    const w = window.open(`https://wa.me/${SALES_NO}?text=${encodeURIComponent(msg)}`, '_blank'); if (w) w.opener = null;
+  }
+  /** One-time codes per plan length: 1MTHET, then 1MTHET1, 1MTHET2 ... Each code works once on this device. */
   function applyCode(raw, msgEl) {
-    const m = /^(\d{1,2})MTHET$/i.exec(String(raw).trim());
-    if (!m || +m[1] < 1) { msgEl.className = 'mt-1 text-sm text-red-700'; msgEl.textContent = 'That code isn\'t valid. Check it and try again.'; return; }
+    const bad = (t) => { msgEl.className = 'mt-1 text-sm text-red-700'; msgEl.textContent = t; };
+    const m = /^([1-9]\d?)MTHET([1-9]\d{0,3})?$/i.exec(String(raw).trim());
+    if (!m) return bad('That code isn\'t valid. Check it and try again.');
+    const months = +m[1], k = m[2] ? +m[2] : 0, used = readJ(CODES_KEY, {}), n = used[months] || 0;
+    if (k < n) return bad('This code has already been used. Please ask us for a new code.');
+    if (k > n) return bad('That code isn\'t valid. Check it and try again.');
+    used[months] = n + 1; writeJ(CODES_KEY, used);
     const p = getPlan(), now = Math.max(Date.now(), p.seen || 0);
-    p.exp = addMonths(Math.max(p.exp, now), +m[1]); p.seen = now; writeJ(PLAN_KEY, p);
+    p.exp = addMonths(Math.max(p.exp, now), months); p.seen = now; writeJ(PLAN_KEY, p);
     planLocked();
-    msgEl.className = 'mt-1 text-sm text-emerald-700'; msgEl.textContent = `Recharged: ${m[1]} month${+m[1] === 1 ? '' : 's'} added.`;
+    msgEl.className = 'mt-1 text-sm text-emerald-700'; msgEl.textContent = `Recharged: ${months} month${months === 1 ? '' : 's'} added.`;
     $('setCode').value = ''; $('planCode').value = '';
   }
 
@@ -1047,6 +1275,131 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     const msg = `Hello, please run this marketing campaign for ${shop.name}. The customer PDF is attached (${cust.length} customers).\n\nMessage:\n${text.slice(0, 700)}`;
     const w = window.open(`https://wa.me/${MKT_NO}?text=${encodeURIComponent(msg)}`, '_blank'); if (w) w.opener = null;
     $('mktStatus').textContent = 'The PDF was downloaded. In the WhatsApp chat, tap the attach (📎) button, choose that PDF, and press Send.';
+  }
+
+  // ================= Languages: English / Hindi / Bengali =================
+  // Rows: [English, Hindi, Bengali]. Any screen text that matches an English row is translated automatically.
+  const LANG_KEY = 'easy_trial_lang';
+  const TX = [
+    ['Help', 'सहायता', 'সহায়তা'], ['Install app', 'ऐप इंस्टॉल करें', 'অ্যাপ ইনস্টল করুন'], ['Plan & recharge', 'प्लान और रिचार्ज', 'প্ল্যান ও রিচার্জ'],
+    ['Plan ended', 'प्लान समाप्त', 'প্ল্যান শেষ'], ['Welcome back', 'फिर से स्वागत है', 'আবার স্বাগতম'], ['What would you like to do today?', 'आज आप क्या करना चाहेंगे?', 'আজ আপনি কী করতে চান?'],
+    ['Add your shop name to personalise your bills and this screen.', 'अपने बिल और इस स्क्रीन को अपना बनाने के लिए दुकान का नाम जोड़ें।', 'আপনার বিল ও এই স্ক্রিন নিজের করে নিতে দোকানের নাম যোগ করুন।'],
+    ['Add shop name', 'दुकान का नाम जोड़ें', 'দোকানের নাম যোগ করুন'], ["Today's bills", 'आज के बिल', 'আজকের বিল'], ["Today's sales", 'आज की बिक्री', 'আজকের বিক্রি'],
+    ['Pay Later dues', 'बकाया राशि', 'বকেয়া'], ['What do you want to do?', 'आप क्या करना चाहते हैं?', 'আপনি কী করতে চান?'], ['Home', 'होम', 'হোম'],
+    ['Billing', 'बिलिंग', 'বিলিং'], ['Create bills and send them on WhatsApp', 'बिल बनाएं और WhatsApp पर भेजें', 'বিল বানান এবং WhatsApp-এ পাঠান'],
+    ['Virtual Try-On', 'वर्चुअल ट्राई-ऑन', 'ভার্চুয়াল ট্রাই-অন'], ['Show how clothes may look on a customer', 'ग्राहक पर कपड़े कैसे लगेंगे, दिखाएं', 'ক্রেতার গায়ে জামা কেমন লাগবে দেখান'],
+    ['Customers', 'ग्राहक', 'গ্রাহক'], ['Everyone you have billed, with purchases', 'जिन्हें आपने बिल दिया, खरीदारी के साथ', 'যাদের বিল দিয়েছেন, কেনাকাটা সহ'],
+    ['Pay Later', 'बाद में भुगतान', 'পরে পেমেন্ট'], ['Track dues and send reminders', 'बकाया देखें और रिमाइंडर भेजें', 'বকেয়া দেখুন ও রিমাইন্ডার পাঠান'],
+    ['Marketing', 'मार्केटिंग', 'মার্কেটিং'], ['Send offers to your customers', 'अपने ग्राहकों को ऑफ़र भेजें', 'গ্রাহকদের অফার পাঠান'],
+    ['Product Photos', 'प्रोडक्ट फ़ोटो', 'প্রোডাক্ট ছবি'], ['Make clean photos of your garments', 'अपने कपड़ों की साफ़ फ़ोटो बनाएं', 'পোশাকের পরিষ্কার ছবি বানান'],
+    // Billing
+    ['Create a bill and send it to your customer on WhatsApp. Customers and purchases are saved on this device.', 'बिल बनाएं और ग्राहक को WhatsApp पर भेजें। ग्राहक और खरीदारी इसी डिवाइस पर सेव रहती हैं।', 'বিল বানিয়ে গ্রাহককে WhatsApp-এ পাঠান। গ্রাহক ও কেনাকাটা এই ডিভাইসেই সেভ থাকে।'],
+    ['Customer name', 'ग्राहक का नाम', 'গ্রাহকের নাম'], ['WhatsApp number', 'WhatsApp नंबर', 'WhatsApp নম্বর'], ['Items', 'सामान', 'পণ্য'], ['+ Add item', '+ सामान जोड़ें', '+ পণ্য যোগ করুন'],
+    ['Total', 'कुल', 'মোট'], ['Discount', 'छूट', 'ছাড়'], ['Payment', 'भुगतान', 'পেমেন্ট'], ['Cash', 'नकद', 'নগদ'], ['Card', 'कार्ड', 'কার্ড'], ['None', 'कोई नहीं', 'নেই'],
+    ['Customer will pay by (optional)', 'ग्राहक इस तारीख तक भुगतान करेगा (वैकल्पिक)', 'গ্রাহক এই তারিখের মধ্যে দেবেন (ঐচ্ছিক)'],
+    ['This bill is added to the Pay Later list, where you can send a WhatsApp reminder.', 'यह बिल "बाद में भुगतान" सूची में जुड़ेगा, जहाँ से आप WhatsApp रिमाइंडर भेज सकते हैं।', 'এই বিল "পরে পেমেন্ট" তালিকায় যাবে, সেখান থেকে WhatsApp রিমাইন্ডার পাঠাতে পারবেন।'],
+    ['Generate Bill & Open WhatsApp', 'बिल बनाएं और WhatsApp खोलें', 'বিল বানান ও WhatsApp খুলুন'], ['WhatsApp opens with the bill ready to send. You tap Send there.', 'WhatsApp में बिल तैयार मिलेगा। वहाँ बस Send दबाएं।', 'WhatsApp-এ বিল তৈরি থাকবে। সেখানে শুধু Send চাপুন।'],
+    ['Your bill will appear here after you generate it. You can then send it on WhatsApp or print it.', 'बिल बनाने के बाद वह यहाँ दिखेगा। फिर आप उसे WhatsApp पर भेज सकते हैं या प्रिंट कर सकते हैं।', 'বিল বানালে এখানে দেখা যাবে। তারপর WhatsApp-এ পাঠাতে বা প্রিন্ট করতে পারবেন।'],
+    ['Send on WhatsApp', 'WhatsApp पर भेजें', 'WhatsApp-এ পাঠান'], ['Send photo on WhatsApp', 'WhatsApp पर फ़ोटो भेजें', 'WhatsApp-এ ছবি পাঠান'], ['Send as text instead', 'इसके बजाय टेक्स्ट भेजें', 'বদলে টেক্সট পাঠান'],
+    ['Send as photo instead', 'इसके बजाय फ़ोटो भेजें', 'বদলে ছবি পাঠান'], ['Print / Save PDF', 'प्रिंट / PDF सेव करें', 'প্রিন্ট / PDF সেভ'],
+    ['Item (e.g. Blue shirt)', 'सामान (जैसे नीली शर्ट)', 'পণ্য (যেমন নীল শার্ট)'], ['Price', 'कीमत', 'দাম'], ['Item name', 'सामान का नाम', 'পণ্যের নাম'], ['Quantity', 'मात्रा', 'পরিমাণ'],
+    ['Add items to show the payment QR.', 'पेमेंट QR दिखाने के लिए सामान जोड़ें।', 'পেমেন্ট QR দেখাতে পণ্য যোগ করুন।'],
+    ['TAX INVOICE', 'टैक्स इनवॉइस', 'ট্যাক্স ইনভয়েস'], ['CASH MEMO', 'कैश मेमो', 'ক্যাশ মেমো'], ['Bill No:', 'बिल नं:', 'বিল নং:'], ['Date:', 'तारीख:', 'তারিখ:'], ['Customer:', 'ग्राहक:', 'গ্রাহক:'],
+    ['Subtotal', 'उप-योग', 'সাবটোটাল'], ['Grand Total', 'कुल योग', 'সর্বমোট'], ['Amount Due', 'देय राशि', 'প্রদেয় অর্থ'], ['Terms', 'शर्तें', 'শর্ত'],
+    ['paid', 'चुकाया गया', 'পরিশোধিত'], ['payment pending', 'भुगतान बाकी', 'পেমেন্ট বাকি'], ['due by', 'देय तारीख', 'শেষ তারিখ'],
+    ['Thank you for shopping with {s}!', 'आपने {s} से खरीदारी की, धन्यवाद!', 'আপনি {s}-এ কেনাকাটা করেছেন, ধন্যবাদ!'],
+    ['We truly appreciate your visit and hope to see you again soon.', 'आपके आने के लिए हम आभारी हैं, फिर मिलेंगे।', 'আপনার আসার জন্য আমরা কৃতজ্ঞ, আবার দেখা হবে।'],
+    ['Scan to pay {a} to {p}', 'पेमेंट के लिए स्कैन करें — {a}, {p} को', 'পেমেন্টের জন্য স্ক্যান করুন — {a}, {p}-কে'],
+    ['Hello {n},', 'नमस्ते {n},', 'নমস্কার {n},'], ['This is a friendly reminder from *{s}*.', 'यह *{s}* की ओर से एक विनम्र याद दिलाना है।', 'এটি *{s}*-এর পক্ষ থেকে একটি বিনীত অনুস্মারক।'],
+    ['Your payment of *{a}* is pending:', 'आपका *{a}* का भुगतान बाकी है:', 'আপনার *{a}* পেমেন্ট বাকি আছে:'], [', due by {d}', ', {d} तक देय', ', {d}-এর মধ্যে দেয়'],
+    ['You can pay by UPI: {u}', 'आप UPI से भुगतान कर सकते हैं: {u}', 'আপনি UPI-তে পেমেন্ট করতে পারেন: {u}'],
+    // Customers & Pay Later
+    ['Everyone you have billed is saved here with what they bought. Tap a name to see their purchases, or start a new bill for them.', 'जिन्हें आपने बिल दिया वे सब यहाँ सेव हैं। नाम पर टैप करके खरीदारी देखें या नया बिल बनाएं।', 'যাদের বিল দিয়েছেন সবাই এখানে সেভ আছে। নামে ট্যাপ করে কেনাকাটা দেখুন বা নতুন বিল বানান।'],
+    ['Search by name or number', 'नाम या नंबर से खोजें', 'নাম বা নম্বর দিয়ে খুঁজুন'], ['New bill', 'नया बिल', 'নতুন বিল'], ['Delete', 'हटाएं', 'মুছুন'], ['Pending', 'बकाया', 'বাকি'],
+    ['No customers yet. They are saved automatically when you create a bill.', 'अभी कोई ग्राहक नहीं। बिल बनाते ही वे अपने आप सेव हो जाते हैं।', 'এখনও কোনো গ্রাহক নেই। বিল বানালেই নিজে থেকে সেভ হবে।'],
+    ['Customers who said they will pay later are listed here. Send a payment reminder on WhatsApp, and tap Mark paid once the money arrives. Total pending:', 'जिन ग्राहकों ने बाद में भुगतान करने को कहा, वे यहाँ हैं। WhatsApp पर रिमाइंडर भेजें और पैसे आने पर "भुगतान हुआ" दबाएं। कुल बकाया:', 'যে গ্রাহকরা পরে পেমেন্ট করবেন বলেছেন তারা এখানে আছেন। WhatsApp-এ রিমাইন্ডার পাঠান, টাকা এলে "পেমেন্ট হয়েছে" চাপুন। মোট বাকি:'],
+    ['Mark paid', 'भुगतान हुआ', 'পেমেন্ট হয়েছে'], ['Send reminder on WhatsApp', 'WhatsApp पर रिमाइंडर भेजें', 'WhatsApp-এ রিমাইন্ডার পাঠান'], ['Overdue', 'देर हो चुकी', 'সময় পেরিয়েছে'],
+    ['No pending payments. Bills made with "Pay Later" appear here.', 'कोई बकाया नहीं। "बाद में भुगतान" वाले बिल यहाँ दिखेंगे।', 'কোনো বাকি নেই। "পরে পেমেন্ট" বিল এখানে দেখাবে।'],
+    // Marketing
+    ['Write your offer or message. EasyBiz makes a PDF with your message and all customer details, then opens WhatsApp to our marketing team, who take it from there.', 'अपना ऑफ़र या संदेश लिखें। EasyBiz आपके संदेश और सभी ग्राहकों की जानकारी का PDF बनाता है, फिर हमारी मार्केटिंग टीम के लिए WhatsApp खोलता है, आगे का काम वे संभालते हैं।', 'আপনার অফার বা মেসেজ লিখুন। EasyBiz মেসেজ ও সব গ্রাহকের তথ্য নিয়ে PDF বানায়, তারপর আমাদের মার্কেটিং টিমের জন্য WhatsApp খোলে, বাকি কাজ তারা করে।'],
+    ['Message for your customers', 'ग्राहकों के लिए संदेश', 'গ্রাহকদের জন্য মেসেজ'],
+    ['saved customers will be included. Only send promotions to customers who agreed to receive them.', 'सेव किए गए ग्राहक शामिल होंगे। प्रमोशन सिर्फ़ उन्हीं ग्राहकों को भेजें जिन्होंने इसकी अनुमति दी हो।', 'সেভ করা গ্রাহকরা অন্তর্ভুক্ত হবে। শুধু যারা সম্মতি দিয়েছেন তাদেরই প্রমোশন পাঠান।'],
+    ['Create PDF & send to marketing team', 'PDF बनाएं और मार्केटिंग टीम को भेजें', 'PDF বানান ও মার্কেটিং টিমকে পাঠান'],
+    ['e.g. Festive sale: flat 20% off on all shirts this week!', 'जैसे: त्योहार सेल: इस हफ़्ते सभी शर्ट पर 20% की छूट!', 'যেমন: উৎসবের সেল: এই সপ্তাহে সব শার্টে ২০% ছাড়!'],
+    // Try-on & product photos
+    ['Your virtual fitting room', 'आपका वर्चुअल ट्रायल रूम', 'আপনার ভার্চুয়াল ট্রায়াল রুম'],
+    ['Upload your garment and a customer photo to create a realistic virtual try-on.', 'कपड़े की और ग्राहक की फ़ोटो अपलोड करें और वर्चुअल ट्राई-ऑन बनाएं।', 'পোশাক ও গ্রাহকের ছবি আপলোড করে ভার্চুয়াল ট্রাই-অন বানান।'],
+    ['Front View', 'आगे का हिस्सा', 'সামনের দিক'], ['Back View (optional)', 'पीछे का हिस्सा (वैकल्पिक)', 'পিছনের দিক (ঐচ্ছিক)'], ['Customer Photo', 'ग्राहक की फ़ोटो', 'গ্রাহকের ছবি'], ['Garment photo', 'कपड़े की फ़ोटो', 'পোশাকের ছবি'],
+    ['Upload a clear front photo of the clothing.', 'कपड़े की साफ़ सामने की फ़ोटो अपलोड करें।', 'পোশাকের সামনের পরিষ্কার ছবি দিন।'], ['Optional: a clear back photo of the clothing.', 'वैकल्पिक: कपड़े के पीछे की साफ़ फ़ोटो।', 'ঐচ্ছিক: পোশাকের পিছনের পরিষ্কার ছবি।'],
+    ['Upload a clear, full-body photo of the person.', 'व्यक्ति की साफ़, पूरे शरीर की फ़ोटो अपलोड करें।', 'ব্যক্তির পরিষ্কার, পুরো শরীরের ছবি দিন।'], ['Upload a clear photo of the garment.', 'कपड़े की साफ़ फ़ोटो अपलोड करें।', 'পোশাকের পরিষ্কার ছবি দিন।'],
+    ['Tap to upload or drop a photo', 'अपलोड करने के लिए टैप करें या फ़ोटो डालें', 'আপলোড করতে ট্যাপ করুন বা ছবি ফেলুন'], ['Replace', 'बदलें', 'বদলান'], ['Remove', 'हटाएं', 'সরান'],
+    ['Generate Virtual Try-On', 'वर्चुअल ट्राई-ऑन बनाएं', 'ভার্চুয়াল ট্রাই-অন বানান'], ['Generating…', 'बन रहा है…', 'তৈরি হচ্ছে…'], ['Preparing your images…', 'आपकी फ़ोटो तैयार हो रही हैं…', 'আপনার ছবি তৈরি হচ্ছে…'],
+    ['Creating your virtual try-on…', 'आपका वर्चुअल ट्राई-ऑन बन रहा है…', 'আপনার ভার্চুয়াল ট্রাই-অন তৈরি হচ্ছে…'], ['Generation may take a little time. Please keep this page open.', 'इसमें थोड़ा समय लग सकता है। कृपया यह पेज खुला रखें।', 'এতে একটু সময় লাগতে পারে। অনুগ্রহ করে এই পেজ খোলা রাখুন।'],
+    ['Your virtual try-on is ready', 'आपका वर्चुअल ट्राई-ऑन तैयार है', 'আপনার ভার্চুয়াল ট্রাই-অন তৈরি'], ['Download Image', 'इमेज डाउनलोड करें', 'ইমেজ ডাউনলোড করুন'], ['Generate Another', 'एक और बनाएं', 'আরেকটি বানান'],
+    ['Style', 'स्टाइल', 'স্টাইল'], ['Clean white background cut-out (free)', 'साफ़ सफ़ेद बैकग्राउंड कट-आउट (मुफ़्त)', 'পরিষ্কার সাদা ব্যাকগ্রাউন্ড কাট-আউট (বিনামূল্যে)'],
+    ['Generate Product Image', 'प्रोडक्ट इमेज बनाएं', 'প্রোডাক্ট ইমেজ বানান'], ['Your product image', 'आपकी प्रोडक्ट इमेज', 'আপনার প্রোডাক্ট ইমেজ'],
+    // Settings, plan, help
+    ['Settings', 'सेटिंग्स', 'সেটিংস'], ['Language', 'भाषा', 'ভাষা'], ['Shop details (printed on bills)', 'दुकान की जानकारी (बिल पर छपेगी)', 'দোকানের তথ্য (বিলে ছাপা হবে)'], ['Shop name', 'दुकान का नाम', 'দোকানের নাম'],
+    ['Country code', 'देश कोड', 'দেশের কোড'], ['Currency symbol', 'मुद्रा चिह्न', 'মুদ্রার চিহ্ন'], ['Send bills on WhatsApp as', 'WhatsApp पर बिल भेजें', 'WhatsApp-এ বিল পাঠান'],
+    ['Plain text message', 'सादा टेक्स्ट संदेश', 'সাধারণ টেক্সট মেসেজ'], ['Photo of the bill (image)', 'बिल की फ़ोटो (इमेज)', 'বিলের ছবি (ইমেজ)'], ['More bill details (optional)', 'बिल की और जानकारी (वैकल्पिक)', 'বিলের আরও তথ্য (ঐচ্ছিক)'],
+    ['Address', 'पता', 'ঠিকানা'], ['Shop phone', 'दुकान का फ़ोन', 'দোকানের ফোন'], ['Email', 'ईमेल', 'ইমেইল'], ['GSTIN (makes the bill a Tax Invoice)', 'GSTIN (बिल को टैक्स इनवॉइस बनाता है)', 'GSTIN (বিলকে ট্যাক্স ইনভয়েস করে)'],
+    ["UPI payee name (shown in the payer's UPI app)", 'UPI प्राप्तकर्ता का नाम (भुगतान करने वाले के UPI ऐप में दिखेगा)', 'UPI প্রাপকের নাম (পেয়ারের UPI অ্যাপে দেখাবে)'], ['Terms & conditions', 'नियम और शर्तें', 'শর্তাবলি'],
+    ['Save shop details', 'दुकान की जानकारी सेव करें', 'দোকানের তথ্য সেভ করুন'], ['Image engine', 'इमेज इंजन', 'ইমেজ ইঞ্জিন'], ['Save API Key', 'API की सेव करें', 'API কী সেভ করুন'], ['Remove API Key', 'API की हटाएं', 'API কী মুছুন'],
+    ['Show', 'दिखाएं', 'দেখান'], ['Hide', 'छिपाएं', 'লুকান'], ['No API key saved', 'कोई API की सेव नहीं', 'কোনো API কী সেভ নেই'],
+    ['Recharge plans', 'रिचार्ज प्लान', 'রিচার্জ প্ল্যান'], ['Have a recharge code?', 'रिचार्ज कोड है?', 'রিচার্জ কোড আছে?'], ['Apply', 'लागू करें', 'প্রয়োগ করুন'], ['Choose a plan to recharge', 'रिचार्ज के लिए प्लान चुनें', 'রিচার্জের জন্য প্ল্যান বেছে নিন'],
+    ['1 month', '1 महीना', '১ মাস'], ['6 months', '6 महीने', '৬ মাস'], ['Annual (12 months)', 'वार्षिक (12 महीने)', 'বার্ষিক (১২ মাস)'], ['Best value', 'सबसे किफ़ायती', 'সেরা মূল্য'], ['total', 'कुल', 'মোট'],
+    ['Your plan has ended', 'आपका प्लान समाप्त हो गया है', 'আপনার প্ল্যান শেষ হয়েছে'], ['Activate', 'चालू करें', 'চালু করুন'], ['Call', 'कॉल करें', 'কল করুন'], ['Close', 'बंद करें', 'বন্ধ করুন'], ['Dismiss', 'बंद करें', 'বন্ধ করুন'],
+    ['Help & support', 'सहायता और सपोर्ट', 'সহায়তা ও সাপোর্ট'], ['Stuck on something? Call or WhatsApp our support team.', 'कहीं अटक गए? हमारी सपोर्ट टीम को कॉल या WhatsApp करें।', 'কোথাও আটকে গেছেন? আমাদের সাপোর্ট টিমকে কল বা WhatsApp করুন।'],
+    ["Enter the customer's name.", 'ग्राहक का नाम लिखें।', 'গ্রাহকের নাম লিখুন।'], ['Add at least one item with a name and a price.', 'कम से कम एक सामान नाम और कीमत के साथ जोड़ें।', 'অন্তত একটি পণ্য নাম ও দামসহ যোগ করুন।'],
+    ['Add your shop name in Settings first, so it appears on the bill.', 'पहले सेटिंग्स में दुकान का नाम जोड़ें, ताकि वह बिल पर दिखे।', 'আগে সেটিংসে দোকানের নাম যোগ করুন, যাতে বিলে দেখায়।']
+  ];
+  const PAT = [
+    [/^Hello!(.*)$/, 'नमस्ते!$1', 'নমস্কার!$1'], [/^(\d+) days? left$/, '$1 दिन बाकी', '$1 দিন বাকি'], [/^(\d+) hrs? left$/, '$1 घंटे बाकी', '$1 ঘণ্টা বাকি'],
+    [/^Valid until (.+)$/, '$1 तक मान्य', '$1 পর্যন্ত বৈধ'], [/^₹(\d+)\/month$/, '₹$1/माह', '₹$1/মাস'], [/^· \+(\d+) · (\d+) bills? · (.+)$/, '· +$1 · $2 बिल · $3', '· +$1 · $2টি বিল · $3'],
+    [/^Payment: (.*)$/, 'भुगतान: $1', 'পেমেন্ট: $1'], [/^Terms: (.*)$/, 'शर्तें: $1', 'শর্ত: $1'], [/^Thank you for shopping with (.+)! 🙏$/, 'आपने $1 से खरीदारी की, धन्यवाद! 🙏', 'আপনি $1-এ কেনাকাটা করেছেন, ধন্যবাদ! 🙏']
+  ];
+  const DICT = { hi: new Map(TX.map((r) => [r[0], r[1]])), bn: new Map(TX.map((r) => [r[0], r[2]])) }, LI = { hi: 1, bn: 2 };
+  let lang = (() => { try { const v = localStorage.getItem(LANG_KEY); return v === 'hi' || v === 'bn' ? v : 'en'; } catch { return 'en'; } })();
+  /** Translates a string (keeps surrounding spaces). English or unknown text is returned unchanged. */
+  function tr(str) {
+    const raw = String(str), t = raw.trim();
+    if (lang === 'en' || !t) return raw;
+    let out = DICT[lang].get(t);
+    if (out === undefined) { for (const p of PAT) if (p[0].test(t)) { out = t.replace(p[0], p[LI[lang]]); break; } }
+    return out === undefined ? raw : raw.replace(t, () => out);
+  }
+  const trf = (str, vars) => tr(str).replace(/\{(\w+)\}/g, (_, k) => (k in vars ? vars[k] : `{${k}}`));
+  const origText = new WeakMap(), outText = new WeakMap();
+  function applyNode(n) {
+    if (n.nodeType === 3) {
+      if (n.parentNode && /^(SCRIPT|STYLE|TEXTAREA)$/.test(n.parentNode.nodeName)) return;
+      const src = origText.has(n) && n.data === outText.get(n) ? origText.get(n) : n.data, out = tr(src);
+      if (out !== n.data) { origText.set(n, src); outText.set(n, out); n.data = out; }
+    } else if (n.nodeType === 1) {
+      if (/^(SCRIPT|STYLE)$/.test(n.nodeName)) return;
+      ['placeholder', 'aria-label', 'title', 'alt'].forEach((a) => {
+        if (!n.hasAttribute(a)) return;
+        const m = n._i || (n._i = {}), cur = n.getAttribute(a), src = m[a] && cur === m[a].out ? m[a].src : cur, out = tr(src);
+        if (out !== cur) { m[a] = { src, out }; n.setAttribute(a, out); }
+      });
+      n.childNodes.forEach(applyNode);
+    }
+  }
+  function syncLangUI() {
+    $('langSel').value = lang;
+    document.querySelectorAll('.langbtn').forEach((b) => { b.className = `langbtn rounded-full px-3 py-1.5 text-sm font-semibold ${b.dataset.lang === lang ? 'bg-white text-accent' : 'bg-white/20 text-white hover:bg-white/30'}`; });
+  }
+  function setLang(l) {
+    lang = l; try { localStorage.setItem(LANG_KEY, l); } catch {}
+    document.documentElement.lang = l; syncLangUI(); applyNode(document.body);
+  }
+  function initLang() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+    $('langSel').addEventListener('change', () => setLang($('langSel').value));
+    // Anything the app adds later (bills, lists, messages) is translated automatically.
+    new MutationObserver((recs) => recs.forEach((r) => { if (r.type === 'characterData') applyNode(r.target); else r.addedNodes.forEach(applyNode); })).observe(document.body, { childList: true, subtree: true, characterData: true });
+    syncLangUI(); if (lang !== 'en') applyNode(document.body);
   }
 
   // ---------- Init ----------
